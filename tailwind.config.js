@@ -6,7 +6,15 @@ module.exports = {
         container: {
             center: true,
         },
-        extend: {},
+        extend: {
+            colors: {
+                "dark-0": "#21252b",
+                "dark-1": "#282c34",
+                "dark-2": "#2c313a",
+                "dark-3": "#383e4a",
+                "dark-4": "#383e4a",
+            },
+        },
     },
     plugins: [],
 }
