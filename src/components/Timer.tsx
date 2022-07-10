@@ -1,8 +1,9 @@
 import { useEffect, useState, KeyboardEvent } from "react";
 import { msToTime } from "../util/helpers";
+import { SolveType } from "../util/types";
 
-export default function Timer(props: {className?: string}) {
-    const {className} = props;
+export default function Timer(props: {solves: SolveType[], setSolves: (solves: SolveType[]) => void, className?: string}) {
+    const {solves, setSolves, className} = props;
     const [millis, setMillis] = useState(0);
     const [timer, setTimer] = useState({isActive: false, start: 0});
     const [held, setHeld] = useState(false);
@@ -22,6 +23,12 @@ export default function Timer(props: {className?: string}) {
         if (timer.isActive) {
             setStopping(true);
             setTimer({isActive: false, start: timer.start});
+            setSolves([...solves, {
+                millis: millis,
+                timestamp: timer.start,
+                flags: 0,
+                scramble: "heeheeheehaw",
+            }]);
         } else if (e.code === "Space") {
             setHeld(true);
             setMillis(0);
@@ -38,8 +45,8 @@ export default function Timer(props: {className?: string}) {
 
     return (
         <div
-            onKeyDown={e => handleKeyDown(e)}
-            onKeyUp={e => handleKeyUp(e)}
+            onKeyDown={handleKeyDown}
+            onKeyUp={handleKeyUp}
             tabIndex={0}
             className={"outline-none container h-full flex flex-col gap-4 justify-center items-center " + className}
         >
