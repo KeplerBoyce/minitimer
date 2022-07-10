@@ -1,4 +1,5 @@
 import { useEffect, useState, KeyboardEvent } from "react";
+import { msToTime } from "../util/helpers";
 
 export default function Timer(props: {className?: string}) {
     const {className} = props;
@@ -34,17 +35,6 @@ export default function Timer(props: {className?: string}) {
             }, 10)
         }
     }, [timer, millis]);
-
-    const msToTime = (ms: number): string => {
-        const milliseconds = Math.floor((ms % 1000) / 10),
-            seconds = Math.floor((ms / 1000) % 60),
-            minutes = Math.floor((ms / (1000 * 60)) % 60);
-        return (minutes ? (
-            minutes + ":" + ((seconds < 10) ? "0" + seconds : seconds)
-        ) : (
-            seconds
-        )) + "." + ((milliseconds < 10) ? "0" + milliseconds : milliseconds);
-    }
 
     return (
         <div
