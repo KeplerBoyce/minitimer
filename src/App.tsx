@@ -4,11 +4,7 @@ import Timer from "./components/Timer";
 import { SolveType } from "./util/types";
 
 export default function App() {
-    const [solves, setSolves] = useState<SolveType[]>([
-        {millis: 3470, timestamp: 0, flags: 0, scramble: "heeheeheehaw"},
-        {millis: 3470, timestamp: 0, flags: 0, scramble: "heeheeheehaw"},
-        {millis: 3470, timestamp: 0, flags: 0, scramble: "heeheeheehaw"},
-    ]);
+    const [solves, setSolves] = useState<SolveType[]>();
 
     return (
         <div className="w-full h-[100vh] bg-dark-1">

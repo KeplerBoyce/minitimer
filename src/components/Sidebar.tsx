@@ -1,12 +1,14 @@
+import { useState } from "react";
 import { SolveType } from "../util/types";
 import Solve from "./Solve";
 
 export default function Sidebar(props: {solves?: SolveType[], className?: string}) {
     const {solves, className} = props;
+    const [modalOpen, setModalOpen] = useState(false);
 
     return (
         <div className={"w-72 h-full p-2 " + className} >
-            <div className="flex justify-center text-3xl border-b-2 mb-3">
+            <div className="flex justify-center text-4xl mb-2">
                 <span className="text-green-500">mini</span>
                 <span className="text-white">timer</span>
             </div>
@@ -15,8 +17,13 @@ export default function Sidebar(props: {solves?: SolveType[], className?: string
                     <th className="italic">#</th>
                     <th>Time</th>
                 </tr>
-                {solves?.map((s, i) =>
-                    <Solve solve={{...s}} index={i} className="text-light text-lg font-mono" />
+                {solves?.reverse().map((s, i) =>
+                    <Solve
+                        solve={{...s}}
+                        index={solves.length - i}
+                        onClick={() => {}}
+                        className="hover:bg-dark-2 hover:cursor-pointer text-light text-lg font-mono"
+                    />
                 )}
             </table>
         </div>

@@ -2,7 +2,7 @@ import { useEffect, useState, KeyboardEvent } from "react";
 import { msToTime } from "../util/helpers";
 import { SolveType } from "../util/types";
 
-export default function Timer(props: {solves: SolveType[], setSolves: (solves: SolveType[]) => void, className?: string}) {
+export default function Timer(props: {solves?: SolveType[], setSolves: (solves: SolveType[]) => void, className?: string}) {
     const {solves, setSolves, className} = props;
     const [millis, setMillis] = useState(0);
     const [timer, setTimer] = useState({isActive: false, start: 0});
@@ -23,12 +23,22 @@ export default function Timer(props: {solves: SolveType[], setSolves: (solves: S
         if (timer.isActive) {
             setStopping(true);
             setTimer({isActive: false, start: timer.start});
-            setSolves([...solves, {
-                millis: millis,
-                timestamp: timer.start,
-                flags: 0,
-                scramble: "heeheeheehaw",
-            }]);
+            //annoying if in case solves is undefined
+            if (solves) {
+                setSolves([...solves, {
+                    millis: millis,
+                    timestamp: timer.start,
+                    flags: 0,
+                    scramble: "heeheeheehaw",
+                }]);
+            } else {
+                setSolves([{
+                    millis: millis,
+                    timestamp: timer.start,
+                    flags: 0,
+                    scramble: "heeheeheehaw",
+                }]);
+            }
         } else if (e.code === "Space") {
             setHeld(true);
             setMillis(0);
