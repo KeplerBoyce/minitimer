@@ -61,9 +61,23 @@ export default function Sidebar(props: {solves?: SolveType[], setSolves: (solves
                         onClick={() => {setMenuOpen(!menuOpen)}}
                         className={"hover:cursor-pointer absolute left-0 right-0 h-2 bg-light" + (menuOpen ? " visible" : " invisible")}
                         />
-                    <div className={"absolute left-0 mt-2 w-48 h-48 bg-light rounded-lg rounded-tl-none"
+                    <div className={"absolute left-0 mt-2 flex flex-col bg-light rounded-lg rounded-tl-none whitespace-nowrap"
                         + (menuOpen ? " visible" : " invisible")}>
-
+                        {sessions[0] && sessions.map((s, i) => {//check that a session exists first
+                            if (s === chosenSession) {
+                                return (
+                                    <p key={i} className="bg-green-500 hover:bg-green-600 px-2 py-1 rounded-lg">
+                                        {s.name}
+                                    </p>
+                                )
+                            } else {
+                                return (
+                                    <button key={i} className="hover:bg-lightish px-2 py-1 rounded-lg">
+                                        {s.name}
+                                    </button>
+                                )
+                            }
+                        })}
                     </div>
                 </div>
                 <button onClick={() => setIsOpen(true)} className="bg-light px-3 py-1 rounded-lg">
