@@ -4,10 +4,10 @@ import { SolveType } from "../util/types";
 
 export default function Timer(props: {solves?: SolveType[], setSolves: (solves: SolveType[]) => void, className?: string}) {
     const {solves, setSolves, className} = props;
-    const [millis, setMillis] = useState(0);
-    const [timer, setTimer] = useState({isActive: false, start: 0});
-    const [held, setHeld] = useState(false);
-    const [stopping, setStopping] = useState(false);
+    const [millis, setMillis] = useState(0);//duration of ongoing solve in milliseconds
+    const [timer, setTimer] = useState({isActive: false, start: 0});//whether timer is running and start timestamp
+    const [held, setHeld] = useState(false);//whether spacebar is held
+    const [stopping, setStopping] = useState(false);//true if holding spacebar after stopping solve
 
     //starting timer
     const handleKeyUp = (e: KeyboardEvent) => {
@@ -27,6 +27,7 @@ export default function Timer(props: {solves?: SolveType[], setSolves: (solves: 
             if (solves) {
                 setSolves([...solves, {
                     millis: millis,
+                    index: solves.length + 1,
                     timestamp: timer.start,
                     flags: 0,
                     scramble: "heeheeheehaw",
@@ -34,6 +35,7 @@ export default function Timer(props: {solves?: SolveType[], setSolves: (solves: 
             } else {
                 setSolves([{
                     millis: millis,
+                    index: 1,
                     timestamp: timer.start,
                     flags: 0,
                     scramble: "heeheeheehaw",
@@ -50,6 +52,10 @@ export default function Timer(props: {solves?: SolveType[], setSolves: (solves: 
             setTimeout(() => {
                 setMillis(Date.now() - timer.start);
             }, 10)
+        } else if (solves && !held) {//timer display continues changing for a moment after stopping; this corrects it
+            if (solves[solves.length - 1].millis !== millis) {
+                setMillis(solves[solves.length - 1].millis);
+            }
         }
     }, [timer, millis]);
 
