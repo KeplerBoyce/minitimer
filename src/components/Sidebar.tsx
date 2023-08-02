@@ -1,9 +1,15 @@
 import { useEffect, useState } from "react";
 import { SessionType, SolveType } from "../util/types";
+import Dropdown from "./Dropdown";
 import SessionModal from "./SessionModal";
 import Solve from "./Solve";
 
-export default function Sidebar(props: {solves?: SolveType[], setSolves: (solves: SolveType[]) => void, className?: string}) {
+
+export default function Sidebar(props: {
+    solves?: SolveType[],
+    setSolves: (solves: SolveType[]) => void,
+    className?: string,
+}) {
     const {solves, setSolves, className} = props;
     const [sessions, setSessions] = useState([undefined as unknown as SessionType]);//list of all sessions
     const [chosenSession, setChosenSession] = useState({} as SessionType);
@@ -18,8 +24,12 @@ export default function Sidebar(props: {solves?: SolveType[], setSolves: (solves
                 setSessions(JSON.parse(ls));
                 setChosenSession(JSON.parse(ls)[0]);
             } else {
-                setSessions([{name: "Session 1", solves: [undefined as unknown as SolveType], cube: "3x3"}]);
-                setChosenSession({name: "Session 1", solves: [undefined as unknown as SolveType], cube: "3x3"});
+                setSessions([
+                    {name: "Funny session", solves: [undefined as unknown as SolveType], cube: "3x3"},
+                    {name: "Test", solves: [undefined as unknown as SolveType], cube: "3x3"},
+                    {name: "OH", solves: [undefined as unknown as SolveType], cube: "3x3"},
+                ]);
+                setChosenSession({name: "Test", solves: [undefined as unknown as SolveType], cube: "3x3"});
             }
         }
     });
@@ -43,46 +53,22 @@ export default function Sidebar(props: {solves?: SolveType[], setSolves: (solves
     }
 
     return (
-        <div className={"w-72 h-full p-4 " + className} >
+        <div className={"w-96 h-full p-4 " + className} >
             <div className="flex justify-center text-4xl mb-4">
                 <span className="text-green-500">mini</span>
                 <span className="text-white">timer</span>
             </div>
 
             <div className="flex justify-center gap-2 mb-2">
-                <div className="relative inline-block">
-                    <button
-                        onClick={() => {setMenuOpen(!menuOpen)}}
-                        className={"z-20 bg-light px-1" + (menuOpen ? " rounded-t-lg" : " rounded-lg")}
-                    >
-                        <p className="text-2xl -translate-y-1">⌄</p>
-                    </button>
-                    <div
-                        onClick={() => {setMenuOpen(!menuOpen)}}
-                        className={"hover:cursor-pointer absolute left-0 right-0 h-2 bg-light" + (menuOpen ? " visible" : " invisible")}
-                        />
-                    <div className={"absolute left-0 mt-2 flex flex-col bg-light rounded-lg rounded-tl-none whitespace-nowrap"
-                        + (menuOpen ? " visible" : " invisible")}>
-                        {sessions[0] && sessions.map((s, i) => {//check that a session exists first
-                            if (s === chosenSession) {
-                                return (
-                                    <p key={i} className="bg-green-500 hover:bg-green-600 px-2 py-1 rounded-lg">
-                                        {s.name}
-                                    </p>
-                                )
-                            } else {
-                                return (
-                                    <button key={i} className="hover:bg-lightish px-2 py-1 rounded-lg">
-                                        {s.name}
-                                    </button>
-                                )
-                            }
-                        })}
-                    </div>
-                </div>
-                <button onClick={() => setIsOpen(true)} className="bg-light px-3 py-1 rounded-lg">
-                    {chosenSession.name}
-                </button>
+                <Dropdown
+                    chosen={chosenSession.name}
+                    options={sessions.map(s => s.name)}
+                    setOption={x => setChosenSession(sessions.find(s => s.name === x) ?? chosenSession)}
+                    menuClass="bg-orange-400 text-white hover:bg-orange-500 transition duration-250 px-3 py-1 rounded-lg"
+                    listClass="bg-slate-200 rounded-lg mt-1"
+                    buttonClass="bg-slate-100 hover:bg-slate-200 transition duration-250 px-3 py-1 rounded-lg"
+                    activeClass="bg-slate-300 px-3 py-1 rounded-lg"
+                />
                 <button className="bg-blue-500 text-white px-3 py-1 rounded-lg">
                     {chosenSession.cube}
                 </button>

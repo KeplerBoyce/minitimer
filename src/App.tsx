@@ -3,6 +3,7 @@ import Sidebar from "./components/Sidebar";
 import Timer from "./components/Timer";
 import { SolveType } from "./util/types";
 
+
 export default function App() {
     const [solves, setSolves] = useState(undefined as unknown as SolveType[]);
 

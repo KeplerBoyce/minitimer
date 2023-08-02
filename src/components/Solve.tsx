@@ -3,7 +3,13 @@ import { msToTime } from "../util/helpers";
 import { SolveType } from "../util/types";
 import SolveModal from "./SolveModal";
 
-export default function Solve(props: {solve: SolveType, removeSolve: (index: number) => void, widths: string[], className?: string}) {
+
+export default function Solve(props: {
+    solve: SolveType,
+    removeSolve: (index: number) => void,
+    widths: string[],
+    className?: string,
+}) {
     const {solve, removeSolve, widths, className} = props;
     const [isOpen, setIsOpen] = useState(false);
 

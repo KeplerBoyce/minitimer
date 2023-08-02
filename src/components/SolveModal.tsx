@@ -2,7 +2,14 @@ import { msToTime } from "../util/helpers";
 import { SolveType } from "../util/types";
 import CenteredModal from "./CenteredModal";
 
-export default function SolveModal(props: {solve: SolveType, removeSolve: () => void, isOpen: boolean, setIsOpen: (value: boolean) => void, className?: string}) {
+
+export default function SolveModal(props: {
+    solve: SolveType,
+    removeSolve: () => void,
+    isOpen: boolean,
+    setIsOpen: (value: boolean) => void,
+    className?: string,
+}) {
     const {solve, removeSolve, isOpen, setIsOpen, className} = props;
 
     return (

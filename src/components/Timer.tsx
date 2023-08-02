@@ -2,7 +2,12 @@ import { useEffect, useState, KeyboardEvent } from "react";
 import { msToTime } from "../util/helpers";
 import { SolveType } from "../util/types";
 
-export default function Timer(props: {solves?: SolveType[], setSolves: (solves: SolveType[]) => void, className?: string}) {
+
+export default function Timer(props: {
+    solves?: SolveType[], 
+    setSolves: (solves: SolveType[]) => void, 
+    className?: string,
+}) {
     const {solves, setSolves, className} = props;
     const [millis, setMillis] = useState(0);//duration of ongoing solve in milliseconds
     const [timer, setTimer] = useState({isActive: false, start: 0});//whether timer is running and start timestamp
