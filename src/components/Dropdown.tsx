@@ -31,15 +31,18 @@ export default function Dropdown(props: {
                 leaveTo="transform opacity-0 scale-95 -translate-y-2"
             >
                 <Menu.Items>
-                    <div className="absolute left-0 flex flex-col bg-slate-100 rounded-lg mt-1 max-h-72 overflow-y-auto" >
+                    <div className="absolute left-0 flex flex-col bg-slate-100 rounded-lg mt-1 max-h-96 min-w-[8rem] max-w-[16rem] overflow-y-auto divide-y divide-slate-300" >
                         {options.map((o, i) =>
                             <Menu.Item key={i}>
                                 <button
                                     onClick={() => setOption(o)}
-                                    className={"text-left " + (o === chosen ? "bg-slate-300 px-3 py-1 rounded-lg"
-                                        : "bg-slate-100 hover:bg-slate-200 px-3 py-1 rounded-lg")}
+                                    className={"px-3 py-1 pr-5 w-full h-full "
+                                        + (o === chosen ? "bg-slate-300"
+                                            : "bg-slate-100 hover:bg-slate-200")}
                                 >
-                                    {o}
+                                    <p className="overflow-x-hidden text-left text-ellipsis">
+                                        {o}
+                                    </p>
                                 </button>
                             </Menu.Item>
                         )}

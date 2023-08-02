@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Sidebar from "./components/Sidebar";
 import Timer from "./components/Timer";
+import RightSidebar from"./components/RightSidebar";
 import { SolveType } from "./util/types";
 
 
@@ -24,7 +25,7 @@ export default function App() {
         <div className="flex w-full h-screen bg-dark-1">
             <Sidebar solves={solves} setSolves={setSolves} className="bg-dark-0 w-1/5 min-w-[20rem] grow" />
             <Timer solves={solves} setSolves={setSolves} className="w-3/5" />
-            <Sidebar solves={solves} setSolves={setSolves} className="bg-dark-0 w-1/5 min-w-[20rem] grow" />
+            <RightSidebar className="bg-dark-0 w-1/5 min-w-[20rem] grow" />
         </div>
     )
 }
