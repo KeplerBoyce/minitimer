@@ -11,12 +11,15 @@ export default function Dropdown(props: {
     buttonClass: string,
     activeClass: string,
 }) {
-    const {chosen, options, setOption, menuClass, listClass, buttonClass, activeClass} = props;
+    const { chosen, options, setOption, menuClass, listClass, buttonClass, activeClass } = props;
 
     return (
         <Menu as="div" className="relative inline-block whitespace-nowrap">
             <Menu.Button className={menuClass}>
-                {chosen}
+                <div className="flex gap-1.5">
+                    <p>Session:</p>
+                    {chosen}
+                </div>
             </Menu.Button>
             <Transition
                 as={Fragment}
@@ -29,8 +32,8 @@ export default function Dropdown(props: {
             >
                 <Menu.Items>
                     <div className={"absolute left-0 flex flex-col " + listClass}>
-                        {options.map(o =>
-                            <Menu.Item>
+                        {options.map((o, i) =>
+                            <Menu.Item key={i}>
                                 <button
                                     onClick={() => setOption(o)}
                                     className={o === chosen ? activeClass : buttonClass}
