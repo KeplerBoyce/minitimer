@@ -8,7 +8,7 @@ export default function Timer(props: {
     setSolves: (solves: SolveType[]) => void,
     className?: string,
 }) {
-    const {solves, setSolves, className} = props;
+    const { solves, setSolves, className } = props;
     const [millis, setMillis] = useState(0);//duration of ongoing solve in milliseconds
     const [timer, setTimer] = useState({ isActive: false, start: 0 });//whether timer is running and start timestamp
     const [held, setHeld] = useState(false);//whether spacebar is held
@@ -69,7 +69,7 @@ export default function Timer(props: {
             onKeyDown={handleKeyDown}
             onKeyUp={handleKeyUp}
             tabIndex={0}
-            className={"outline-none container h-full flex flex-col gap-4 justify-center items-center " + className}
+            className={"outline-none container px-6 h-full flex flex-col gap-4 justify-center items-center " + className}
         >
             <p className={"text-9xl font-light font-mono pb-[10%] duration-150" + (held ? " text-green-500" : " text-white")}>
                 {msToTime(millis)}

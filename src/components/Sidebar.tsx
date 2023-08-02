@@ -18,6 +18,21 @@ export default function Sidebar(props: {
     const [solve, setSolve] = useState({} as SolveType);
     const [sessionModalOpen, setSessionModalOpen] = useState(false);//for session info modal
     const [solveModalOpen, setSolveModalOpen] = useState(false);//for solve info modal
+    const [cube, setCube] = useState("");
+
+    const cubes = [
+        "3x3",
+        "4x4",
+        "5x5",
+        "6x6",
+        "7x7",
+        "2x2",
+        "Pyraminx",
+        "Megaminx",
+        "Skewb",
+        "Square-1",
+        "Clock"
+    ];
 
     //load sessions from localStorage; if there are none, create an empty one
     useEffect(() => {
@@ -27,11 +42,12 @@ export default function Sidebar(props: {
             setChosenSession(JSON.parse(ls)[0]);
         } else {
             setSessions([
-                {name: "Funny session", solves: [undefined as unknown as SolveType], cube: "3x3"},
+                {name: "Funny session eeeeeeeeeeee", solves: [undefined as unknown as SolveType], cube: "3x3"},
                 {name: "Test", solves: [undefined as unknown as SolveType], cube: "3x3"},
                 {name: "OH", solves: [undefined as unknown as SolveType], cube: "3x3"},
             ]);
             setChosenSession({name: "Test", solves: [undefined as unknown as SolveType], cube: "3x3"});
+            setCube("3x3");
         }
     }, []);
 
@@ -60,30 +76,30 @@ export default function Sidebar(props: {
     }
 
     return (
-        <div className={"w-96 h-full p-4 " + className} >
+        <div className={"h-full p-4 " + className} >
             <div className="flex justify-center text-4xl mb-4">
                 <span className="text-green-500">mini</span>
                 <span className="text-white">timer</span>
             </div>
 
-            <div className="flex justify-between items-center gap-2 mb-4">
-                <div className="flex grow items-center gap-3">
+            <div className="flex justify-between items-center gap-2 mb-4 max-w-full">
+                <Dropdown
+                    chosen={cube}
+                    options={cubes}
+                    setOption={x => setCube(x)}
+                    className="bg-blue-500 hover:bg-blue-600 px-3 py-1 rounded-lg text-white font-semibold"
+                />
+                <div className="min-w-0 grow">
                     <Dropdown
                         chosen={chosenSession.name}
                         options={sessions.map(s => s.name)}
                         setOption={x => setChosenSession(sessions.find(s => s.name === x) ?? chosenSession)}
-                        menuClass="bg-amber-600 hover:bg-amber-700 px-3 py-1 rounded-lg text-white font-semibold"
-                        listClass="bg-slate-200 rounded-lg mt-1"
-                        buttonClass="bg-slate-100 hover:bg-slate-200 px-3 py-1 rounded-lg"
-                        activeClass="bg-slate-300 px-3 py-1 rounded-lg"
+                        className="bg-amber-600 hover:bg-amber-700 px-3 py-1 rounded-lg text-white font-semibold overflow-x-hidden text-ellipsis max-w-full"
                     />
                 </div>
                 <button onClick={() => setSessionModalOpen(true)}>
                     <BsFillGearFill size="20px" color="#cbd5e1" />
                 </button>
-                <p className="bg-blue-500 text-white px-1.5 py-0.5 text-sm rounded-full font-semibold">
-                    {chosenSession?.cube}
-                </p>
             </div>
 
             <div className="flex flex-col-reverse w-full">

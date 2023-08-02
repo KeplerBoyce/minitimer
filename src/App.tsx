@@ -21,9 +21,10 @@ export default function App() {
     }, [solves]);
 
     return (
-        <div className="w-full h-[100vh] bg-dark-1">
-            <Sidebar solves={solves} setSolves={setSolves} className="absolute left-0 bg-dark-0" />
-            <Timer solves={solves} setSolves={setSolves} />
+        <div className="flex w-full h-screen bg-dark-1">
+            <Sidebar solves={solves} setSolves={setSolves} className="bg-dark-0 w-1/5 min-w-[20rem] grow" />
+            <Timer solves={solves} setSolves={setSolves} className="w-3/5" />
+            <Sidebar solves={solves} setSolves={setSolves} className="bg-dark-0 w-1/5 min-w-[20rem] grow" />
         </div>
     )
 }
