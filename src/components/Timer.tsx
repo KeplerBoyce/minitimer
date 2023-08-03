@@ -6,10 +6,8 @@ import { CubesContext } from "../App";
 export default function Timer(props: {className?: string}) {
     const { className } = props;
     const {
-        cubes,
-        chosenCube,
-        sessionIndex,
-        setCubes,
+        solves,
+        setSolves,
     } = useContext(CubesContext);
 
     const [millis, setMillis] = useState(0);//duration of ongoing solve in milliseconds
@@ -31,16 +29,13 @@ export default function Timer(props: {className?: string}) {
         if (timer.isActive) {
             setStopping(true);
             setTimer({ isActive: false, start: timer.start });
-            const newCubes = cubes;
-            const solves = cubes[chosenCube][sessionIndex].solves;
-            newCubes[chosenCube][sessionIndex].solves.push({
+            setSolves([...solves, {
                 millis: millis,
                 index: solves.length + 1,
                 timestamp: timer.start,
                 flags: 0,
                 scramble: "heeheeheehaw",
-            });
-            setCubes(newCubes);
+            }]);
         } else if (e.code === "Space") {
             setHeld(true);
             setMillis(0);
@@ -52,9 +47,9 @@ export default function Timer(props: {className?: string}) {
             setTimeout(() => {
                 setMillis(Date.now() - timer.start);
             }, 10)
-        } else if (cubes[chosenCube][sessionIndex].solves.length > 0 && !held) {//timer display continues changing for a moment after stopping; this corrects it
-            if (cubes[chosenCube][sessionIndex].solves.slice(-1)[0].millis !== millis) {
-                setMillis(cubes[chosenCube][sessionIndex].solves.slice(-1)[0].millis);
+        } else if (solves.length > 0 && !held) {//timer display continues changing for a moment after stopping; this corrects it
+            if (solves[solves.length - 1].millis !== millis) {
+                setMillis(solves[solves.length - 1].millis);
             }
         }
     }, [timer, millis]);
