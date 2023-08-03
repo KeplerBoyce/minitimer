@@ -1,91 +1,62 @@
-import { useEffect, useState } from "react";
-import { SessionType, SolveType } from "../util/types";
+import { useContext, useState } from "react";
+import { SolveType } from "../util/types";
 import Dropdown from "./Dropdown";
 import SessionModal from "./SessionModal";
 import Solve from "./Solve";
 import SolveModal from "./SolveModal";
 import { BsPlus, BsFillGearFill } from "react-icons/bs";
 import NewSessionModal from "./NewSessionModal";
+import { CubesContext } from "../App";
 
 
-export default function Sidebar(props: {
-    solves: SolveType[],
-    setSolves: (solves: SolveType[]) => void,
-    className?: string,
-}) {
-    const {solves, setSolves, className} = props;
-    const [sessions, setSessions] = useState<Array<SessionType>>([]);//list of all sessions
-    const [chosenSession, setChosenSession] = useState({} as SessionType);
+export default function Sidebar(props: {className?: string}) {
+    const { className } = props;
+    const {
+        cubes,
+        chosenCube,
+        sessionIndex,
+        sessions,
+        solves,
+        setChosenCube,
+        setSessionIndex,
+        setSessions,
+        setSolves,
+    } = useContext(CubesContext);
+
     const [solve, setSolve] = useState({} as SolveType);
+
     const [sessionModalOpen, setSessionModalOpen] = useState(false);//for session info modal
+    const [newSessionModalOpen, setNewSessionModalOpen] = useState(false);//for new session modal
     const [solveModalOpen, setSolveModalOpen] = useState(false);//for solve info modal
-    const [newSessionModalOpen, setNewSessionModalOpen] = useState(false);
-    const [cube, setCube] = useState("");
-
-    const cubes = [
-        "3x3",
-        "4x4",
-        "5x5",
-        "6x6",
-        "7x7",
-        "2x2",
-        "Pyraminx",
-        "Megaminx",
-        "Skewb",
-        "Square-1",
-        "Clock"
-    ];
-
-    //load sessions from localStorage; if there are none, create an empty one
-    useEffect(() => {
-        const ls = localStorage.getItem("sessions");
-        const ls2 = localStorage.getItem("lastCube");
-        const lsCube = (ls2 === null || ls2 === "undefined")
-            ? "3x3"
-            : ls2;
-        setCube(lsCube);
-        if (ls !== null && ls !== "undefined") {
-            setSessions(JSON.parse(ls)[lsCube]);
-            setChosenSession(JSON.parse(ls)[lsCube][0]);
-        } else {
-            setSessions([
-                {name: "Funny session eeeeeeeeeeee", solves: [undefined as unknown as SolveType], cube: "3x3"},
-                {name: "Test", solves: [undefined as unknown as SolveType], cube: "3x3"},
-                {name: "OH", solves: [undefined as unknown as SolveType], cube: "3x3"},
-            ]);
-            setChosenSession({name: "Test", solves: [undefined as unknown as SolveType], cube: "3x3"});
-        }
-    }, []);
 
     //remove solve at index
     const removeSolve = (index: number) => {
-        if (solves) {
-            setSolves([
-                ...solves.slice(0, index - 1),
-                ...solves.slice(index).map(x => {//update index of all later solves
-                    x.index--;
-                    return x;
-                })
-            ]);
-        }
+        setSolves([
+            ...solves.slice(0, index - 1),
+            ...solves.slice(index).map(x => {//update index of all later solves
+                x.index--;
+                return x;
+            })
+        ]);
     }
     //removes currently selected sesssion
     const removeSession = () => {
-        setSessions(sessions.filter(s => s !== chosenSession));
-        setChosenSession(sessions[0]);//set chosen session to first in list
+        setSessions(sessions.filter(s => s.index !== sessionIndex));
+        setSessionIndex(Math.max(0, sessionIndex - 1));//set chosen session to first in list
     }
 
     const addSession = (name: string) => {
         setSessions([...sessions, {
             name,
+            index: sessions.length,
             solves: [],
-            cube,
+            cube: chosenCube,
         }]);
     }
 
     //handle clicking on solve to open modal
     const handleSolveClick = (index: number) => {
-        setSolve(solves[index]);
+        setSolve(cubes[chosenCube][sessionIndex].solves[index]);
         setSolveModalOpen(true);
     }
 
@@ -98,16 +69,16 @@ export default function Sidebar(props: {
 
             <div className="flex justify-between items-center gap-2 mb-4 max-w-full">
                 <Dropdown
-                    chosen={cube}
-                    options={cubes}
-                    setOption={x => setCube(x)}
+                    chosen={chosenCube}
+                    options={Object.keys(cubes)}
+                    setOption={x => setChosenCube(Object.keys(cubes)[x])}
                     className="bg-blue-500 hover:bg-blue-600 px-3 py-1 rounded-lg text-white font-semibold"
                 />
                 <div className="min-w-0">
                     <Dropdown
-                        chosen={chosenSession.name}
-                        options={sessions.map(s => s.name)}
-                        setOption={x => setChosenSession(sessions.find(s => s.name === x) ?? chosenSession)}
+                        chosen={cubes[chosenCube][sessionIndex].name}
+                        options={cubes[chosenCube].map(s => s.name)}
+                        setOption={x => setSessionIndex(x)}
                         className="bg-amber-600 hover:bg-amber-700 px-3 py-1 rounded-lg text-white font-semibold overflow-x-hidden text-ellipsis max-w-full"
                     />
                 </div>
@@ -121,7 +92,7 @@ export default function Sidebar(props: {
             </div>
 
             <div className="flex flex-col-reverse w-full">
-                {solves && solves.length > 0 ? (
+                {solves.length > 0 ? (
                     solves.map((s, i) =>
                         <Solve
                             key={i}
@@ -143,7 +114,7 @@ export default function Sidebar(props: {
             </div>
 
             <SessionModal
-                session={chosenSession}
+                session={cubes[chosenCube][sessionIndex]}
                 removeSession={removeSession}
                 isOpen={sessionModalOpen}
                 setIsOpen={setSessionModalOpen}

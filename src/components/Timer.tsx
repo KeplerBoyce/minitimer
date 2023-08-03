@@ -1,14 +1,17 @@
-import { useEffect, useState, KeyboardEvent } from "react";
+import { useEffect, useState, KeyboardEvent, useContext } from "react";
 import { msToTime } from "../util/helpers";
-import { SolveType } from "../util/types";
+import { CubesContext } from "../App";
 
 
-export default function Timer(props: {
-    solves: SolveType[],
-    setSolves: (solves: SolveType[]) => void,
-    className?: string,
-}) {
-    const { solves, setSolves, className } = props;
+export default function Timer(props: {className?: string}) {
+    const { className } = props;
+    const {
+        cubes,
+        chosenCube,
+        sessionIndex,
+        setCubes,
+    } = useContext(CubesContext);
+
     const [millis, setMillis] = useState(0);//duration of ongoing solve in milliseconds
     const [timer, setTimer] = useState({ isActive: false, start: 0 });//whether timer is running and start timestamp
     const [held, setHeld] = useState(false);//whether spacebar is held
@@ -28,24 +31,16 @@ export default function Timer(props: {
         if (timer.isActive) {
             setStopping(true);
             setTimer({ isActive: false, start: timer.start });
-            //annoying if in case solves is undefined
-            if (solves) {
-                setSolves([...solves, {
-                    millis: millis,
-                    index: solves.length + 1,
-                    timestamp: timer.start,
-                    flags: 0,
-                    scramble: "heeheeheehaw",
-                }]);
-            } else {
-                setSolves([{
-                    millis: millis,
-                    index: 1,
-                    timestamp: timer.start,
-                    flags: 0,
-                    scramble: "heeheeheehaw",
-                }]);
-            }
+            const newCubes = cubes;
+            const solves = cubes[chosenCube][sessionIndex].solves;
+            newCubes[chosenCube][sessionIndex].solves.push({
+                millis: millis,
+                index: solves.length + 1,
+                timestamp: timer.start,
+                flags: 0,
+                scramble: "heeheeheehaw",
+            });
+            setCubes(newCubes);
         } else if (e.code === "Space") {
             setHeld(true);
             setMillis(0);
@@ -57,9 +52,9 @@ export default function Timer(props: {
             setTimeout(() => {
                 setMillis(Date.now() - timer.start);
             }, 10)
-        } else if (solves.length > 0 && !held) {//timer display continues changing for a moment after stopping; this corrects it
-            if (solves[solves.length - 1].millis !== millis) {
-                setMillis(solves[solves.length - 1].millis);
+        } else if (cubes[chosenCube][sessionIndex].solves.length > 0 && !held) {//timer display continues changing for a moment after stopping; this corrects it
+            if (cubes[chosenCube][sessionIndex].solves.slice(-1)[0].millis !== millis) {
+                setMillis(cubes[chosenCube][sessionIndex].solves.slice(-1)[0].millis);
             }
         }
     }, [timer, millis]);

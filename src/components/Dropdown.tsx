@@ -6,7 +6,7 @@ import { AiOutlineCaretDown } from 'react-icons/ai'
 export default function Dropdown(props: {
     chosen: string,
     options: string[],
-    setOption: (x: string) => void,
+    setOption: (x: number) => void,
     className: string,
 }) {
     const { chosen, options, setOption, className } = props;
@@ -35,7 +35,7 @@ export default function Dropdown(props: {
                         {options.map((o, i) =>
                             <Menu.Item key={i}>
                                 <button
-                                    onClick={() => setOption(o)}
+                                    onClick={() => setOption(i)}
                                     className={"px-3 py-1 pr-5 w-full h-full "
                                         + (o === chosen ? "bg-slate-300"
                                             : "bg-slate-100 hover:bg-slate-200")}
