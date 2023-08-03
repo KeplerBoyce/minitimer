@@ -40,3 +40,5 @@ export const DEFAULT_CUBES: CubesType = {
     "Square-1": [{ name: "Session 1", index: 0, solves: [], cube: "Square-1" }],
     "Clock": [{ name: "Session 1", index: 0, solves: [], cube: "Clock" }],
 };
+export const DEFAULT_CHOSEN_CUBE: string = "3x3";
+export const DEFAULT_SESSION_INDEX: number = 0;

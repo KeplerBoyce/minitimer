@@ -2,25 +2,25 @@ import { createContext, useEffect, useState } from "react";
 import Sidebar from "./components/Sidebar";
 import Timer from "./components/Timer";
 import RightSidebar from"./components/RightSidebar";
-import { CubesContextType, CubesType, DEFAULT_CUBES, SessionType, SolveType } from "./util/types";
+import { CubesContextType, CubesType, DEFAULT_CHOSEN_CUBE, DEFAULT_CUBES, DEFAULT_SESSION_INDEX, SessionType, SolveType } from "./util/types";
 
 
 export const CubesContext = createContext({} as CubesContextType);
 
 export default function App() {
-    const [cubes, setCubes] = useState({} as CubesType);
-    const [chosenCube, setChosenCube] = useState("");
-    const [sessionIndex, setSessionIndex] = useState(0);
+    const [cubes, setCubes] = useState(DEFAULT_CUBES);
+    const [chosenCube, setChosenCube] = useState(DEFAULT_CHOSEN_CUBE);
+    const [sessionIndex, setSessionIndex] = useState(DEFAULT_SESSION_INDEX);
     
-    //load solves from localStorage
+    //load info from localStorage or use defaults if localStorage is empty
     useEffect(() => {
         const ls = localStorage.getItem("cubes");
         const ls2 = localStorage.getItem("chosenCube");
-        if (ls !== null) {
-            setCubes(JSON.parse(ls));
-        } else {
-            setCubes(DEFAULT_CUBES);
-        }
+        const ls3 = localStorage.getItem("sessionIndex");
+
+        if (ls !== null) setCubes(JSON.parse(ls));
+        if (ls2 !== null) setChosenCube(ls2);
+        if (ls3 !== null) setSessionIndex(parseInt(ls3));
     }, []);
 
     //Save solves to localStorage whenever solves updates
