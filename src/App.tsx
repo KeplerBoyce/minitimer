@@ -2,7 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import Sidebar from "./components/Sidebar";
 import Timer from "./components/Timer";
 import RightSidebar from"./components/RightSidebar";
-import { CubesContextType, CubesType, DEFAULT_CHOSEN_CUBE, DEFAULT_CUBES, DEFAULT_SESSION_INDEX, SessionType, SolveType } from "./util/types";
+import { CubesContextType, SessionType, SolveType, DEFAULT_CHOSEN_CUBE, DEFAULT_CUBES, DEFAULT_SESSION_INDEX } from "./util/types";
 
 
 export const CubesContext = createContext({} as CubesContextType);
@@ -29,16 +29,31 @@ export default function App() {
     }, [cubes]);
 
     const setSessions = (x: SessionType[]) => {
-        const newCubes = cubes;
+        const newCubes = {...cubes};
         newCubes[chosenCube] = x;
         setCubes(newCubes);
     }
 
     const setSolves = (x: SolveType[]) => {
-        const newCubes = cubes;
+        const newCubes = {...cubes};
         newCubes[chosenCube][sessionIndex].solves = x;
         setCubes(newCubes);
     }
+
+    useEffect(() => {
+        if (cubes === DEFAULT_CUBES) return;
+        localStorage.setItem("cubes", JSON.stringify(cubes))
+    }, [cubes]);
+
+    useEffect(() => {
+        if (cubes === DEFAULT_CUBES) return;
+        localStorage.setItem("chosenCube", chosenCube)
+    }, [chosenCube]);
+
+    useEffect(() => {
+        if (cubes === DEFAULT_CUBES) return;
+        localStorage.setItem("sessionIndex", sessionIndex.toString())
+    }, [sessionIndex]);
 
     return (
         <CubesContext.Provider value={{

@@ -102,7 +102,7 @@ export default function Sidebar(props: {className?: string}) {
                     solves.map((s, i) =>
                         <Solve
                             key={i}
-                            solve={{...s}}
+                            solve={s}
                             widths={["w-1/5", "w-2/5"]}
                             onClick={() => handleSolveClick(i)}
                             className="px-2 hover:bg-dark-2 hover:cursor-pointer text-light text-lg font-mono"
