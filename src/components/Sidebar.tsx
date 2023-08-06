@@ -103,7 +103,8 @@ export default function Sidebar(props: {className?: string}) {
                         <Solve
                             key={i}
                             solve={s}
-                            widths={["w-1/5", "w-2/5"]}
+                            lastFive={solves.slice(s.index - 5, s.index)}
+                            widths={["w-1/5", "w-2/5", "w-2/5"]}
                             onClick={() => handleSolveClick(i)}
                             className="px-2 hover:bg-dark-2 hover:cursor-pointer text-light text-lg font-mono"
                         />
@@ -115,7 +116,8 @@ export default function Sidebar(props: {className?: string}) {
                 )}
                 <div className="flex px-2 text-lg text-light font-bold text-left border-b border-light">
                     <p className="w-1/5 italic">#</p>
-                    <p className="w-4/5">Time</p>
+                    <p className="w-2/5">Time</p>
+                    <p className="w-2/5">Ao5</p>
                 </div>
             </div>
 
