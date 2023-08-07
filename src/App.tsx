@@ -1,8 +1,9 @@
 import { createContext, useEffect, useState } from "react";
 import Sidebar from "./components/Sidebar";
 import Timer from "./components/Timer";
-import RightSidebar from"./components/RightSidebar";
+import BottomBar from"./components/BottomBar";
 import { CubesContextType, SessionType, SolveType, DEFAULT_CHOSEN_CUBE, DEFAULT_CUBES, DEFAULT_SESSION_INDEX } from "./util/types";
+import Scramble from "./components/Scramble";
 
 
 export const CubesContext = createContext({} as CubesContextType);
@@ -68,10 +69,13 @@ export default function App() {
             setSessions,
             setSolves,
         }}>
-            <div className="flex w-full h-screen bg-dark-1">
-                <Sidebar className="bg-dark-0 w-1/5 min-w-[20rem] grow" />
-                <Timer className="w-3/5" />
-                <RightSidebar className="bg-dark-0 w-1/5 min-w-[20rem] grow" />
+            <div className="flex w-full h-screen bg-dark-0">
+                <Sidebar className="w-1/5 min-w-[20rem] grow bg-dark-1" />
+                <div className="flex flex-col w-4/5">
+                    <Scramble className="text-white text-xl font-bold bg-dark-2" />
+                    <Timer className="text-7xl w-4/5" />
+                    <BottomBar className="text-white text-xl bg-dark-2" />
+                </div>
             </div>
         </CubesContext.Provider>
     )
