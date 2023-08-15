@@ -4,6 +4,7 @@ import Timer from "./components/Timer";
 import BottomBar from"./components/BottomBar";
 import { CubesContextType, SessionType, SolveType, DEFAULT_CHOSEN_CUBE, DEFAULT_CUBES, DEFAULT_SESSION_INDEX } from "./util/types";
 import Scramble from "./components/Scramble";
+import { Scrambow } from "scrambow";
 
 
 export const CubesContext = createContext({} as CubesContextType);
@@ -12,6 +13,7 @@ export default function App() {
     const [cubes, setCubes] = useState(DEFAULT_CUBES);
     const [chosenCube, setChosenCube] = useState(DEFAULT_CHOSEN_CUBE);
     const [sessionIndex, setSessionIndex] = useState(DEFAULT_SESSION_INDEX);
+    const [scramble, setScramble] = useState("");
     
     //load info from localStorage or use defaults if localStorage is empty
     useEffect(() => {
@@ -22,6 +24,8 @@ export default function App() {
         if (ls !== null) setCubes(JSON.parse(ls));
         if (ls2 !== null) setChosenCube(ls2);
         if (ls3 !== null) setSessionIndex(parseInt(ls3));
+
+        resetScramble();
     }, []);
 
     //Save solves to localStorage whenever solves updates
@@ -40,6 +44,8 @@ export default function App() {
         newCubes[chosenCube][sessionIndex].solves = x;
         setCubes(newCubes);
     }
+
+    const resetScramble = () => setScramble(new Scrambow().get()[0].scramble_string);
 
     useEffect(() => {
         if (cubes === DEFAULT_CUBES) return;
@@ -72,8 +78,14 @@ export default function App() {
             <div className="flex w-full h-screen bg-dark-0">
                 <Sidebar className="w-1/5 min-w-[20rem] grow bg-dark-1" />
                 <div className="flex flex-col w-4/5">
-                    <Scramble className="text-white text-xl font-bold bg-dark-2" />
-                    <Timer className="text-7xl w-4/5" />
+                    <Scramble
+                        scramble={scramble}
+                        className="text-white text-xl font-bold bg-dark-2"
+                    />
+                    <Timer
+                        callback={resetScramble}
+                        className="text-7xl w-4/5"
+                    />
                     <BottomBar className="text-white text-xl bg-dark-2" />
                 </div>
             </div>
