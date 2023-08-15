@@ -14,6 +14,20 @@ export default function App() {
     const [chosenCube, setChosenCube] = useState(DEFAULT_CHOSEN_CUBE);
     const [sessionIndex, setSessionIndex] = useState(DEFAULT_SESSION_INDEX);
     const [scramble, setScramble] = useState("");
+
+    const cubeToScrambler: {[cube: string]: string} = {
+        "2x2": "222",
+        "3x3": "333",
+        "4x4": "444",
+        "5x5": "555",
+        "6x6": "666",
+        "7x7": "777",
+        "Clock": "clock",
+        "Megaminx": "megaminx",
+        "Pyraminx": "pyraminx",
+        "Skewb": "skewb",
+        "Square-1": "square1",
+    };
     
     //load info from localStorage or use defaults if localStorage is empty
     useEffect(() => {
@@ -45,7 +59,9 @@ export default function App() {
         setCubes(newCubes);
     }
 
-    const resetScramble = () => setScramble(new Scrambow().get()[0].scramble_string);
+    const resetScramble = () => setScramble(
+        new Scrambow().setType(cubeToScrambler[chosenCube]).get()[0].scramble_string
+    );
 
     useEffect(() => {
         if (cubes === DEFAULT_CUBES) return;
@@ -55,11 +71,13 @@ export default function App() {
     useEffect(() => {
         if (cubes === DEFAULT_CUBES) return;
         localStorage.setItem("chosenCube", chosenCube)
+        resetScramble();
     }, [chosenCube]);
 
     useEffect(() => {
         if (cubes === DEFAULT_CUBES) return;
         localStorage.setItem("sessionIndex", sessionIndex.toString())
+        resetScramble();
     }, [sessionIndex]);
 
     return (
@@ -80,7 +98,7 @@ export default function App() {
                 <div className="flex flex-col w-4/5">
                     <Scramble
                         scramble={scramble}
-                        className="text-white text-xl font-bold bg-dark-2"
+                        className="text-white text-3xl bg-dark-2"
                     />
                     <Timer
                         callback={resetScramble}
