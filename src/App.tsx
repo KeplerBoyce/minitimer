@@ -101,6 +101,7 @@ export default function App() {
                         className="text-white text-3xl bg-dark-2"
                     />
                     <Timer
+                        scramble={scramble}
                         callback={resetScramble}
                         className="text-7xl w-4/5"
                     />

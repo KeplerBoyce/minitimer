@@ -18,10 +18,14 @@ export default function SolveModal(props: {
             setIsOpen={setIsOpen}
             className={className}
         >
-            <div className="bg-dark-3 p-8 flex flex-col gap-2 text-white text-xl rounded-lg">
+            <div className="max-w-lg bg-dark-3 p-8 flex flex-col gap-2 text-white text-xl rounded-lg">
                 <p>{solve.index}</p>
                 <p>{msToTime(solve.millis)}</p>
-                <button onClick={() => {removeSolve(); setIsOpen(false)}} className="bg-red-600 px-2 pb-1 pt-0.5 rounded-lg">
+                <p>Scramble: {solve.scramble}</p>
+                <button
+                    onClick={() => {removeSolve(); setIsOpen(false)}}
+                    className="bg-red-600 px-2 pb-1 pt-0.5 rounded-lg w-min whitespace-nowrap mx-auto"
+                >
                     Delete solve
                 </button>
             </div>

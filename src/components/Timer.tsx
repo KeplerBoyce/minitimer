@@ -3,8 +3,8 @@ import { msToTime } from "../util/helpers";
 import { CubesContext } from "../App";
 
 
-export default function Timer(props: {callback: () => void, className?: string}) {
-    const { callback, className } = props;
+export default function Timer(props: {scramble: string, callback: () => void, className?: string}) {
+    const { scramble, callback, className } = props;
     const {
         solves,
         setSolves,
@@ -20,7 +20,6 @@ export default function Timer(props: {callback: () => void, className?: string})
         if (!timer.isActive && !stopping && e.code === "Space") {
             setHeld(false);
             setTimer({ isActive: true, start: Date.now() });
-            callback();
         } else {
             setStopping(false);
         }
@@ -35,8 +34,9 @@ export default function Timer(props: {callback: () => void, className?: string})
                 index: solves.length + 1,
                 timestamp: timer.start,
                 flags: 0,
-                scramble: "heeheeheehaw",
+                scramble: scramble,
             }]);
+            callback();
         } else if (e.code === "Space") {
             setHeld(true);
             setMillis(0);
