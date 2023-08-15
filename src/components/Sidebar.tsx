@@ -130,6 +130,7 @@ export default function Sidebar(props: {className?: string}) {
             <SolveModal
                 solve={solve}
                 removeSolve={() => removeSolve(solve.index)}
+                session={sessions[sessionIndex]}
                 isOpen={solveModalOpen}
                 setIsOpen={setSolveModalOpen}
             />
