@@ -98,6 +98,7 @@ export default function App() {
                 <div className="flex flex-col w-4/5">
                     <Scramble
                         scramble={scramble}
+                        resetScramble={resetScramble}
                         className="text-white text-3xl bg-dark-2"
                     />
                     <Timer
