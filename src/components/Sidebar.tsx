@@ -67,7 +67,7 @@ export default function Sidebar(props: {className?: string}) {
     }
 
     return (
-        <div className={"h-full p-4 " + className} >
+        <div className={"flex flex-col h-full max-h-screen p-4 " + className} >
             <div className="flex justify-center text-4xl mb-4">
                 <p className="text-green-500">mini</p>
                 <p className="text-white">timer</p>
@@ -97,7 +97,12 @@ export default function Sidebar(props: {className?: string}) {
                 </button>
             </div>
 
-            <div className="flex flex-col-reverse w-full">
+            <div className="flex px-2 text-lg text-light font-bold text-left border-b border-light">
+                <p className="w-1/5 italic">#</p>
+                <p className="w-2/5">Time</p>
+                <p className="w-2/5">Ao5</p>
+            </div>
+            <div className="flex flex-col-reverse w-full overflow-y-auto">
                 {solves.length > 0 ? (
                     solves.map((s, i) =>
                         <Solve
@@ -114,11 +119,6 @@ export default function Sidebar(props: {className?: string}) {
                         Session empty
                     </p>
                 )}
-                <div className="flex px-2 text-lg text-light font-bold text-left border-b border-light">
-                    <p className="w-1/5 italic">#</p>
-                    <p className="w-2/5">Time</p>
-                    <p className="w-2/5">Ao5</p>
-                </div>
             </div>
 
             <SessionModal
