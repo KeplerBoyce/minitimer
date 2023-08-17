@@ -29,6 +29,9 @@ export type CubesContextType = {
 
 export type StatsType = {[stat: string]: number};
 
+export const TIMER_TYPES = ["timer", "typing"] as const;
+export type TimerType = typeof TIMER_TYPES[number];
+
 export const DEFAULT_CUBES: CubesType = {
     "3x3": [{ name: "Session 1", index: 0, solves: [], cube: "3x3" }],
     "4x4": [{ name: "Session 1", index: 0, solves: [], cube: "4x4" }],
@@ -52,3 +55,4 @@ export const DEFAULT_STATS: StatsType = {
     ao100: Number.MAX_VALUE,
     ao1000: Number.MAX_VALUE,
 }
+export const DEFAULT_TIMER_TYPE: TimerType = "timer";

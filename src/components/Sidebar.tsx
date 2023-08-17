@@ -106,6 +106,7 @@ export default function Sidebar(props: {
                     options={Object.keys(cubes)}
                     chosenIndex={Object.keys(cubes).indexOf(chosenCube)}
                     setOption={switchCube}
+                    align="left-0"
                     className="bg-blue-500 hover:bg-blue-600 px-3 py-1 rounded-lg text-white font-semibold"
                 />
                 <div className="min-w-0">
@@ -113,6 +114,7 @@ export default function Sidebar(props: {
                         options={sessions.map(s => s.name)}
                         chosenIndex={sessionIndex}
                         setOption={x => setSessionIndex(x)}
+                        align="left-0"
                         className="bg-amber-600 hover:bg-amber-700 px-3 py-1 rounded-lg text-white font-semibold overflow-x-hidden text-ellipsis max-w-full"
                     />
                 </div>

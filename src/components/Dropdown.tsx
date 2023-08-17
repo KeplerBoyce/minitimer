@@ -4,12 +4,13 @@ import { AiOutlineCaretDown } from 'react-icons/ai'
 
 
 export default function Dropdown(props: {
-    options: string[],
+    options: readonly string[],
     chosenIndex: number,
     setOption: (x: number) => void,
+    align: string,
     className: string,
 }) {
-    const { options, chosenIndex, setOption, className } = props;
+    const { options, chosenIndex, setOption, align, className } = props;
 
     return (
         <Menu as="div" className="relative whitespace-nowrap">
@@ -31,7 +32,7 @@ export default function Dropdown(props: {
                 leaveTo="transform opacity-0 scale-95 -translate-y-2"
             >
                 <Menu.Items>
-                    <div className="absolute left-0 flex flex-col bg-slate-100 rounded-lg mt-1 max-h-96 min-w-[8rem] max-w-[16rem] overflow-y-auto divide-y divide-slate-300" >
+                    <div className={"absolute flex flex-col bg-slate-100 rounded-lg mt-1 max-h-96 min-w-[8rem] max-w-[16rem] overflow-y-auto divide-y divide-slate-300 " + align} >
                         {options.map((o, i) =>
                             <Menu.Item key={i}>
                                 <button

@@ -1,11 +1,13 @@
 import { createContext, useEffect, useState } from "react";
 import Sidebar from "./components/Sidebar";
 import Timer from "./components/Timer";
-import { CubesContextType, SessionType, SolveType, DEFAULT_CHOSEN_CUBE, DEFAULT_CUBES, DEFAULT_SESSION_INDEX, DEFAULT_STATS } from "./util/types";
+import { CubesContextType, SessionType, SolveType, DEFAULT_CHOSEN_CUBE, DEFAULT_CUBES, DEFAULT_SESSION_INDEX, DEFAULT_STATS, DEFAULT_TIMER_TYPE, TimerType } from "./util/types";
 import Scramble from "./components/Scramble";
 import { Scrambow } from "scrambow";
 import StatsBlock from "./components/StatsBlock";
 import { aoLarge, aoSmall } from "./util/helpers";
+import OptionsBlock from "./components/OptionsBlock";
+import Typing from "./components/Typing";
 
 
 export const CubesContext = createContext({} as CubesContextType);
@@ -21,6 +23,8 @@ export default function App() {
 
     const [scrollTrigger, setScrollTrigger] = useState(false);
     const [canStart, setCanStart] = useState(true);
+
+    const [timerType, setTimerType] = useState(DEFAULT_TIMER_TYPE);
 
     const cubeToScrambler: {[cube: string]: string} = {
         "2x2": "222",
@@ -41,10 +45,12 @@ export default function App() {
         const ls = localStorage.getItem("cubes");
         const ls2 = localStorage.getItem("chosenCube");
         const ls3 = localStorage.getItem("sessionIndex");
+        const ls4 = localStorage.getItem("tiemrType");
 
         if (ls !== null) setCubes(JSON.parse(ls));
         if (ls2 !== null) setChosenCube(ls2);
         if (ls3 !== null) setSessionIndex(parseInt(ls3));
+        if (ls4 !== null) setTimerType(ls4 as TimerType);
 
         resetScramble();
     }, []);
@@ -144,11 +150,24 @@ export default function App() {
                         className="text-white text-3xl bg-dark-2"
                     />
                     <div className="relative h-full">
-                        <Timer
-                            scramble={scramble}
-                            callback={handleSolveEnd}
-                            canStart={canStart}
-                            className="text-7xl w-full"
+                        {timerType === "typing" ?
+                            <Typing
+                                scramble={scramble}
+                                callback={handleSolveEnd}
+                                className="text-5xl"
+                            />
+                        :
+                            <Timer
+                                scramble={scramble}
+                                callback={handleSolveEnd}
+                                canStart={canStart}
+                                className="text-7xl w-full"
+                            />
+                        }
+                        <OptionsBlock
+                            timerType={timerType}
+                            setTimerType={setTimerType}
+                            className="absolute top-4 right-4"
                         />
                         <StatsBlock
                             currents={currents}

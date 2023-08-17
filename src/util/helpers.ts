@@ -13,6 +13,21 @@ export function msToTime(ms: number): string {
     )) + "." + ((milliseconds < 10) ? "0" + milliseconds : milliseconds);
 }
 
+export function timeToMs(time: string) {
+    const chars = time.replaceAll(/:|\./g, '').replace(/^0+/g, '').split('');
+    let ms = 0;
+
+    ms += parseInt(chars.splice(chars.length - 2).join('')) * 10;
+    if (chars.length === 0) return ms;
+    else if (chars.length === 1) ms += parseInt(chars[0]);
+
+    ms += parseInt(chars.splice(chars.length - 2).join('')) * 1000;
+    if (chars.length === 0) return ms;
+
+    ms += parseInt(chars.join('')) * 60000;
+    return ms;
+}
+
 function aoX(n: number, endSize: number, solves: SolveType[]) {
     if (solves.length !== n) return Number.MAX_VALUE;
     const arr = solves.map(s => s.millis);
