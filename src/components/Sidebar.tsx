@@ -135,7 +135,7 @@ export default function Sidebar(props: {
             <div ref={solvesDivRef} className="flex flex-col w-full overflow-y-auto">
                 {solves.length > 0 ? <>
                     {
-                        solves.reverse().map((s, i) =>
+                        solves.slice().reverse().map((s, i) =>
                             <Solve
                                 key={i}
                                 solve={s}
