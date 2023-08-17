@@ -76,11 +76,32 @@ export default function App() {
         setCurrents({
             single: tempSolves[tempSolves.length - 1].millis,
             ao5: aoSmall(5, tempSolves.slice(tempSolves.length - 5, tempSolves.length)),
-            ao12: aoSmall(5, tempSolves.slice(tempSolves.length - 5, tempSolves.length)),
-            ao50: aoLarge(5, tempSolves.slice(tempSolves.length - 5, tempSolves.length)),
-            ao100: aoLarge(5, tempSolves.slice(tempSolves.length - 5, tempSolves.length)),
-            ao1000: aoLarge(5, tempSolves.slice(tempSolves.length - 5, tempSolves.length)),
+            ao12: aoSmall(12, tempSolves.slice(tempSolves.length - 12, tempSolves.length)),
+            ao50: aoLarge(50, tempSolves.slice(tempSolves.length - 50, tempSolves.length)),
+            ao100: aoLarge(100, tempSolves.slice(tempSolves.length - 100, tempSolves.length)),
+            ao1000: aoLarge(1000, tempSolves.slice(tempSolves.length - 1000, tempSolves.length)),
         });
+        let single = Number.MAX_VALUE,
+            ao5 = Number.MAX_VALUE,
+            ao12 = Number.MAX_VALUE,
+            ao50 = Number.MAX_VALUE,
+            ao100 = Number.MAX_VALUE,
+            ao1000 = Number.MAX_VALUE;
+        cubes[chosenCube][sessionIndex].solves.forEach((_, i) => {
+            const thisSingle = tempSolves[i].millis,
+                thisAo5 = aoSmall(5, tempSolves.slice(i - 4, i + 1)),
+                thisAo12 = aoSmall(12, tempSolves.slice(i - 11, i + 1)),
+                thisAo50 = aoLarge(50, tempSolves.slice(i - 49, i + 1)),
+                thisAo100 = aoLarge(100, tempSolves.slice(i - 99, i + 1)),
+                thisAo1000 = aoLarge(1000, tempSolves.slice(i - 999, i + 1));
+            if (thisSingle < single) single = thisSingle;
+            if (thisAo5 < ao5) ao5 = thisAo5;
+            if (thisAo12 < ao12) ao12 = thisAo12;
+            if (thisAo50 < ao50) ao50 = thisAo50;
+            if (thisAo100 < ao100) ao100 = thisAo100
+            if (thisAo1000 < ao1000) ao1000 = thisAo1000;
+        });
+        setBests({single, ao5, ao12, ao50, ao100, ao1000});
     }, [cubes]);
 
     useEffect(() => {

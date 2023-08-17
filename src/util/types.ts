@@ -45,10 +45,10 @@ export const DEFAULT_CUBES: CubesType = {
 export const DEFAULT_CHOSEN_CUBE: string = "3x3";
 export const DEFAULT_SESSION_INDEX: number = 0;
 export const DEFAULT_STATS: StatsType = {
-    single: 0,
-    ao5: 0,
-    ao12: 0,
-    ao50: 0,
-    ao100: 0,
-    ao1000: 0,
+    single: Number.MAX_VALUE,
+    ao5: Number.MAX_VALUE,
+    ao12: Number.MAX_VALUE,
+    ao50: Number.MAX_VALUE,
+    ao100: Number.MAX_VALUE,
+    ao1000: Number.MAX_VALUE,
 }

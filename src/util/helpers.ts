@@ -2,7 +2,7 @@ import { SolveType } from "./types";
 
 
 export function msToTime(ms: number): string {
-    if (ms === -1) return "--";
+    if (ms === Number.MAX_VALUE) return "--";
     const milliseconds = Math.floor((ms % 1000) / 10),
         seconds = Math.floor((ms / 1000) % 60),
         minutes = Math.floor((ms / (1000 * 60)) % 60);
@@ -14,12 +14,12 @@ export function msToTime(ms: number): string {
 }
 
 function aoX(n: number, endSize: number, solves: SolveType[]) {
-    if (solves.length < n) return -1;
+    if (solves.length !== n) return Number.MAX_VALUE;
     const arr = solves.map(s => s.millis);
-    Array(endSize).forEach(_ => {
+    for (let i = 0; i < endSize; i++) {
         arr.splice(arr.indexOf(Math.min(...arr)), 1);
         arr.splice(arr.indexOf(Math.max(...arr)), 1);
-    });
+    };
     return arr.reduce((a, b) => a + b) / (n - 2 * endSize);
 }
 
