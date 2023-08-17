@@ -29,7 +29,7 @@ export default function Sidebar(props: {scrollTrigger: boolean, setScrollTrigger
     const [newSessionModalOpen, setNewSessionModalOpen] = useState(false);//for new session modal
     const [solveModalOpen, setSolveModalOpen] = useState(false);//for solve info modal
 
-    const lastSolveRef = useRef<HTMLDivElement>(null);
+    const solvesDivRef = useRef<HTMLDivElement>(null);
 
     //remove solve at index
     const removeSolve = (index: number) => {
@@ -70,8 +70,8 @@ export default function Sidebar(props: {scrollTrigger: boolean, setScrollTrigger
     }
 
     useEffect(() => {
-        if (scrollTrigger && lastSolveRef.current) {
-            lastSolveRef.current.scrollIntoView();
+        if (scrollTrigger && solvesDivRef.current) {
+            solvesDivRef.current.scrollTo({ top: 0 });
             setScrollTrigger(false);
         }
     }, [scrollTrigger]);
@@ -112,10 +112,10 @@ export default function Sidebar(props: {scrollTrigger: boolean, setScrollTrigger
                 <p className="w-2/5 text-right">Time</p>
                 <p className="w-2/5 text-right">Ao5</p>
             </div>
-            <div className="flex flex-col-reverse w-full overflow-y-auto">
+            <div ref={solvesDivRef} className="flex flex-col w-full overflow-y-auto">
                 {solves.length > 0 ? <>
                     {
-                        solves.map((s, i) =>
+                        solves.reverse().map((s, i) =>
                             <Solve
                                 key={i}
                                 solve={s}
@@ -126,7 +126,6 @@ export default function Sidebar(props: {scrollTrigger: boolean, setScrollTrigger
                             />
                         )
                     }
-                    <div ref={lastSolveRef} />
                 </> : <p className="px-2 text-lg text-light italic">
                     Session empty
                 </p>}
