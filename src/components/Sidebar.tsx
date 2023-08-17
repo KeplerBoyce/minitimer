@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { SolveType } from "../util/types";
 import Dropdown from "./Dropdown";
 import SessionModal from "./SessionModal";
@@ -9,8 +9,8 @@ import NewSessionModal from "./NewSessionModal";
 import { CubesContext } from "../App";
 
 
-export default function Sidebar(props: {className?: string}) {
-    const { className } = props;
+export default function Sidebar(props: {scrollTrigger: boolean, setScrollTrigger: (x: boolean) => void, className?: string}) {
+    const { scrollTrigger, setScrollTrigger, className } = props;
     const {
         cubes,
         chosenCube,
@@ -29,6 +29,8 @@ export default function Sidebar(props: {className?: string}) {
     const [newSessionModalOpen, setNewSessionModalOpen] = useState(false);//for new session modal
     const [solveModalOpen, setSolveModalOpen] = useState(false);//for solve info modal
 
+    const lastSolveRef = useRef<HTMLDivElement>(null);
+
     //remove solve at index
     const removeSolve = (index: number) => {
         setSolves([
@@ -39,6 +41,7 @@ export default function Sidebar(props: {className?: string}) {
             })
         ]);
     }
+
     //removes currently selected sesssion
     const removeSession = () => {
         setSessions(sessions.filter(s => s.index !== sessionIndex));
@@ -66,8 +69,15 @@ export default function Sidebar(props: {className?: string}) {
         setSolveModalOpen(true);
     }
 
+    useEffect(() => {
+        if (scrollTrigger && lastSolveRef.current) {
+            lastSolveRef.current.scrollIntoView();
+            setScrollTrigger(false);
+        }
+    }, [scrollTrigger]);
+
     return (
-        <div className={"flex flex-col h-full max-h-screen p-4 " + className} >
+        <div className={"flex flex-col h-full max-h-screen p-4 " + className}>
             <div className="flex justify-center text-4xl mb-4">
                 <p className="text-green-500">mini</p>
                 <p className="text-white">timer</p>
@@ -97,28 +107,29 @@ export default function Sidebar(props: {className?: string}) {
                 </button>
             </div>
 
-            <div className="flex px-2 text-lg text-light font-bold text-left border-b border-light">
+            <div className="flex px-2 pr-6 text-lg text-light font-bold text-left border-b border-light">
                 <p className="w-1/5 italic">#</p>
-                <p className="w-2/5">Time</p>
-                <p className="w-2/5">Ao5</p>
+                <p className="w-2/5 text-right">Time</p>
+                <p className="w-2/5 text-right">Ao5</p>
             </div>
             <div className="flex flex-col-reverse w-full overflow-y-auto">
-                {solves.length > 0 ? (
-                    solves.map((s, i) =>
-                        <Solve
-                            key={i}
-                            solve={s}
-                            lastFive={solves.slice(s.index - 5, s.index)}
-                            widths={["w-1/5", "w-2/5", "w-2/5"]}
-                            onClick={() => handleSolveClick(i)}
-                            className="px-2 hover:bg-dark-2 hover:cursor-pointer text-light text-lg font-mono"
-                        />
-                    )
-                ) : (
-                    <p className="px-2 text-lg text-light italic">
-                        Session empty
-                    </p>
-                )}
+                {solves.length > 0 ? <>
+                    {
+                        solves.map((s, i) =>
+                            <Solve
+                                key={i}
+                                solve={s}
+                                lastFive={solves.slice(s.index - 5, s.index)}
+                                widths={["w-1/5", "w-2/5", "w-2/5"]}
+                                onClick={() => handleSolveClick(i)}
+                                className="px-2 pr-6 hover:bg-dark-2 hover:cursor-pointer text-light text-lg font-mono"
+                            />
+                        )
+                    }
+                    <div ref={lastSolveRef} />
+                </> : <p className="px-2 text-lg text-light italic">
+                    Session empty
+                </p>}
             </div>
 
             <SessionModal

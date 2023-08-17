@@ -2,9 +2,11 @@ import { createContext, useEffect, useState } from "react";
 import Sidebar from "./components/Sidebar";
 import Timer from "./components/Timer";
 import BottomBar from"./components/BottomBar";
-import { CubesContextType, SessionType, SolveType, DEFAULT_CHOSEN_CUBE, DEFAULT_CUBES, DEFAULT_SESSION_INDEX } from "./util/types";
+import { CubesContextType, SessionType, SolveType, DEFAULT_CHOSEN_CUBE, DEFAULT_CUBES, DEFAULT_SESSION_INDEX, DEFAULT_STATS } from "./util/types";
 import Scramble from "./components/Scramble";
 import { Scrambow } from "scrambow";
+import StatsBlock from "./components/StatsBlock";
+import { aoLarge, aoSmall } from "./util/helpers";
 
 
 export const CubesContext = createContext({} as CubesContextType);
@@ -14,6 +16,11 @@ export default function App() {
     const [chosenCube, setChosenCube] = useState(DEFAULT_CHOSEN_CUBE);
     const [sessionIndex, setSessionIndex] = useState(DEFAULT_SESSION_INDEX);
     const [scramble, setScramble] = useState("");
+
+    const [currents, setCurrents] = useState(DEFAULT_STATS);
+    const [bests, setBests] = useState(DEFAULT_STATS);
+
+    const [scrollTrigger, setScrollTrigger] = useState(false);
 
     const cubeToScrambler: {[cube: string]: string} = {
         "2x2": "222",
@@ -42,11 +49,6 @@ export default function App() {
         resetScramble();
     }, []);
 
-    //Save solves to localStorage whenever solves updates
-    useEffect(() => {
-        localStorage.setItem("solves", JSON.stringify(cubes));
-    }, [cubes]);
-
     const setSessions = (x: SessionType[]) => {
         const newCubes = {...cubes};
         newCubes[chosenCube] = x;
@@ -63,9 +65,23 @@ export default function App() {
         new Scrambow().setType(cubeToScrambler[chosenCube]).get()[0].scramble_string
     );
 
+    const handleSolveEnd = () => {
+        resetScramble();
+        setScrollTrigger(true);
+    }
+
     useEffect(() => {
         if (cubes === DEFAULT_CUBES) return;
         localStorage.setItem("cubes", JSON.stringify(cubes))
+        const tempSolves = cubes[chosenCube][sessionIndex].solves;
+        setCurrents({
+            single: tempSolves[tempSolves.length - 1].millis,
+            ao5: aoSmall(5, tempSolves.slice(tempSolves.length - 5, tempSolves.length)),
+            ao12: aoSmall(5, tempSolves.slice(tempSolves.length - 5, tempSolves.length)),
+            ao50: aoLarge(5, tempSolves.slice(tempSolves.length - 5, tempSolves.length)),
+            ao100: aoLarge(5, tempSolves.slice(tempSolves.length - 5, tempSolves.length)),
+            ao1000: aoLarge(5, tempSolves.slice(tempSolves.length - 5, tempSolves.length)),
+        });
     }, [cubes]);
 
     useEffect(() => {
@@ -94,18 +110,29 @@ export default function App() {
             setSolves,
         }}>
             <div className="flex w-full h-screen bg-dark-0">
-                <Sidebar className="w-1/5 min-w-[20rem] grow bg-dark-1" />
+                <Sidebar
+                    scrollTrigger={scrollTrigger}
+                    setScrollTrigger={setScrollTrigger}
+                    className="w-1/5 min-w-[20rem] grow bg-dark-1"
+                />
                 <div className="flex flex-col w-4/5">
                     <Scramble
                         scramble={scramble}
                         resetScramble={resetScramble}
                         className="text-white text-3xl bg-dark-2"
                     />
-                    <Timer
-                        scramble={scramble}
-                        callback={resetScramble}
-                        className="text-7xl w-4/5"
-                    />
+                    <div className="relative h-full">
+                        <Timer
+                            scramble={scramble}
+                            callback={handleSolveEnd}
+                            className="text-7xl w-full"
+                        />
+                        <StatsBlock
+                            currents={currents}
+                            bests={bests}
+                            className="absolute bottom-4 right-4 bg-dark-2 rounded-xl"
+                        />
+                    </div>
                     <BottomBar className="text-white text-xl bg-dark-2" />
                 </div>
             </div>

@@ -27,6 +27,8 @@ export type CubesContextType = {
     setSolves: (x: SolveType[]) => void,
 };
 
+export type StatsType = {[stat: string]: number};
+
 export const DEFAULT_CUBES: CubesType = {
     "3x3": [{ name: "Session 1", index: 0, solves: [], cube: "3x3" }],
     "4x4": [{ name: "Session 1", index: 0, solves: [], cube: "4x4" }],
@@ -42,3 +44,11 @@ export const DEFAULT_CUBES: CubesType = {
 };
 export const DEFAULT_CHOSEN_CUBE: string = "3x3";
 export const DEFAULT_SESSION_INDEX: number = 0;
+export const DEFAULT_STATS: StatsType = {
+    single: 0,
+    ao5: 0,
+    ao12: 0,
+    ao50: 0,
+    ao100: 0,
+    ao1000: 0,
+}
