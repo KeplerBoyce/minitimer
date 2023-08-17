@@ -20,6 +20,7 @@ export default function App() {
     const [bests, setBests] = useState(DEFAULT_STATS);
 
     const [scrollTrigger, setScrollTrigger] = useState(false);
+    const [canStart, setCanStart] = useState(true);
 
     const cubeToScrambler: {[cube: string]: string} = {
         "2x2": "222",
@@ -74,7 +75,7 @@ export default function App() {
         localStorage.setItem("cubes", JSON.stringify(cubes))
         const tempSolves = cubes[chosenCube][sessionIndex].solves;
         setCurrents({
-            single: tempSolves[tempSolves.length - 1].millis,
+            single: tempSolves[tempSolves.length - 1]?.millis ?? Number.MAX_VALUE,
             ao5: aoSmall(5, tempSolves.slice(tempSolves.length - 5, tempSolves.length)),
             ao12: aoSmall(12, tempSolves.slice(tempSolves.length - 12, tempSolves.length)),
             ao50: aoLarge(50, tempSolves.slice(tempSolves.length - 50, tempSolves.length)),
@@ -133,6 +134,7 @@ export default function App() {
                 <Sidebar
                     scrollTrigger={scrollTrigger}
                     setScrollTrigger={setScrollTrigger}
+                    setCanStart={setCanStart}
                     className="w-1/5 min-w-[20rem] grow bg-dark-1"
                 />
                 <div className="flex flex-col w-4/5">
@@ -145,6 +147,7 @@ export default function App() {
                         <Timer
                             scramble={scramble}
                             callback={handleSolveEnd}
+                            canStart={canStart}
                             className="text-7xl w-full"
                         />
                         <StatsBlock

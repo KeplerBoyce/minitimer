@@ -4,8 +4,8 @@ import { CubesContext } from "../App";
 import useEventListener from "@use-it/event-listener";
 
 
-export default function Timer(props: {scramble: string, callback: () => void, className?: string}) {
-    const { scramble, callback, className } = props;
+export default function Timer(props: {scramble: string, callback: () => void, canStart: boolean, className?: string}) {
+    const { scramble, callback, canStart, className } = props;
     const {
         solves,
         setSolves,
@@ -18,6 +18,7 @@ export default function Timer(props: {scramble: string, callback: () => void, cl
 
     //starting timer
     const handleKeyUp = (e: KeyboardEvent) => {
+        if (!canStart) return;
         if (!timer.isActive && !stopping && e.code === "Space") {
             setHeld(false);
             setTimer({ isActive: true, start: Date.now() });
@@ -27,6 +28,7 @@ export default function Timer(props: {scramble: string, callback: () => void, cl
     }
     //stopping timer
     const handleKeyDown = (e: KeyboardEvent) => {
+        if (!canStart) return;
         if (timer.isActive) {
             setStopping(true);
             setTimer({ isActive: false, start: timer.start });

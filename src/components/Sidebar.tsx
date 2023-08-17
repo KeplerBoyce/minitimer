@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { SolveType } from "../util/types";
+import { DEFAULT_CUBES, SolveType } from "../util/types";
 import Dropdown from "./Dropdown";
 import SessionModal from "./SessionModal";
 import Solve from "./Solve";
@@ -9,8 +9,13 @@ import NewSessionModal from "./NewSessionModal";
 import { CubesContext } from "../App";
 
 
-export default function Sidebar(props: {scrollTrigger: boolean, setScrollTrigger: (x: boolean) => void, className?: string}) {
-    const { scrollTrigger, setScrollTrigger, className } = props;
+export default function Sidebar(props: {
+    scrollTrigger: boolean,
+    setScrollTrigger: (x: boolean) => void,
+    setCanStart: (x: boolean) => void,
+    className?: string,
+}) {
+    const { scrollTrigger, setScrollTrigger, setCanStart, className } = props;
     const {
         cubes,
         chosenCube,
@@ -44,8 +49,13 @@ export default function Sidebar(props: {scrollTrigger: boolean, setScrollTrigger
 
     //removes currently selected sesssion
     const removeSession = () => {
+        if (sessions.length === 1) {
+            setSessions(DEFAULT_CUBES[chosenCube]);
+            setSessionIndex(0);
+        } else {
+            setSessionIndex(Math.max(0, sessionIndex - 1));
+        }
         setSessions(sessions.filter(s => s.index !== sessionIndex));
-        setSessionIndex(Math.max(0, sessionIndex - 1));//set chosen session to first in list
     }
 
     const addSession = (name: string) => {
@@ -75,6 +85,14 @@ export default function Sidebar(props: {scrollTrigger: boolean, setScrollTrigger
             setScrollTrigger(false);
         }
     }, [scrollTrigger]);
+
+    useEffect(() => {
+        if (sessionModalOpen || newSessionModalOpen || solveModalOpen) {
+            setCanStart(false);
+        } else if (!sessionModalOpen && !newSessionModalOpen && !solveModalOpen) {
+            setCanStart(true);
+        }
+    }, [sessionModalOpen, newSessionModalOpen, solveModalOpen]);
 
     return (
         <div className={"flex flex-col h-full max-h-screen p-4 " + className}>
