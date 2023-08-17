@@ -1,6 +1,7 @@
 import { useEffect, useState, KeyboardEvent, useContext } from "react";
 import { msToTime } from "../util/helpers";
 import { CubesContext } from "../App";
+import useEventListener from "@use-it/event-listener";
 
 
 export default function Timer(props: {scramble: string, callback: () => void, className?: string}) {
@@ -42,6 +43,10 @@ export default function Timer(props: {scramble: string, callback: () => void, cl
             setMillis(0);
         }
     }
+
+    useEventListener('keyup', e => handleKeyUp(e as any));
+    useEventListener('keydown', e => handleKeyDown(e as any));
+
     //increase timer in increments of 10ms while running
     useEffect(() => {
         if (timer.isActive) {
@@ -56,12 +61,7 @@ export default function Timer(props: {scramble: string, callback: () => void, cl
     }, [timer, millis]);
 
     return (
-        <div
-            onKeyDown={handleKeyDown}
-            onKeyUp={handleKeyUp}
-            tabIndex={0}
-            className={"outline-none container px-6 h-full flex flex-col gap-4 justify-center items-center " + className}
-        >
+        <div className={"outline-none container px-6 h-full flex flex-col gap-4 justify-center items-center " + className}>
             <p className={"font-light font-mono pb-[10%] duration-150" + (held ? " text-green-500" : " text-white")}>
                 {msToTime(millis)}
             </p>

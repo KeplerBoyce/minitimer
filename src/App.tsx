@@ -1,7 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import Sidebar from "./components/Sidebar";
 import Timer from "./components/Timer";
-import BottomBar from"./components/BottomBar";
 import { CubesContextType, SessionType, SolveType, DEFAULT_CHOSEN_CUBE, DEFAULT_CUBES, DEFAULT_SESSION_INDEX, DEFAULT_STATS } from "./util/types";
 import Scramble from "./components/Scramble";
 import { Scrambow } from "scrambow";
@@ -133,7 +132,6 @@ export default function App() {
                             className="absolute bottom-4 right-4 bg-dark-2 rounded-xl"
                         />
                     </div>
-                    <BottomBar className="text-white text-xl bg-dark-2" />
                 </div>
             </div>
         </CubesContext.Provider>
