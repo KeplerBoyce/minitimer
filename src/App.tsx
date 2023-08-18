@@ -92,6 +92,11 @@ export default function App() {
         } else if (newSolves[newSolves.length - 1].modifier === "+2") {
             newSolves[newSolves.length - 1].millis -= 2000;
         }
+        if (mod === "DNF") {
+            newSolves[newSolves.length - 1].millis += 1e12;
+        } else if (newSolves[newSolves.length - 1].modifier === "DNF") {
+            newSolves[newSolves.length - 1].millis -= 1e12;
+        }
         newSolves[newSolves.length - 1].modifier = mod as SolveModifier;
         setSolves(newSolves);
     }

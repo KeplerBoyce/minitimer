@@ -67,7 +67,7 @@ export default function Solve(props: {
                 {solve.modifier && <p className="flex justify-center items-center h-min px-1.5 py-0.5 bg-red-500 text-white text-xs font-sans font-bold rounded-full">
                     {solve.modifier}
                 </p>}
-                <p className="text-right">{msToTime(solve.millis)}</p>
+                <p className="text-right">{msToTime(solve.millis - (solve.modifier === "DNF" ? 1e12 : 0))}</p>
             </div>
             <p className={widths[2]}>{msToTime(aoSmall(5, lastFive))}</p>
         </div>
