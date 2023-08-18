@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { DEFAULT_CUBES, SolveType } from "../util/types";
+import { DEFAULT_CUBES, SolveType, StatsType } from "../util/types";
 import Dropdown from "./Dropdown";
 import SessionModal from "./SessionModal";
 import Solve from "./Solve";
@@ -10,12 +10,13 @@ import { CubesContext } from "../App";
 
 
 export default function Sidebar(props: {
+    bests: StatsType,
     scrollTrigger: boolean,
     setScrollTrigger: (x: boolean) => void,
     setCanStart: (x: boolean) => void,
     className?: string,
 }) {
-    const { scrollTrigger, setScrollTrigger, setCanStart, className } = props;
+    const { bests, scrollTrigger, setScrollTrigger, setCanStart, className } = props;
     const {
         cubes,
         chosenCube,
@@ -139,6 +140,8 @@ export default function Sidebar(props: {
                             <Solve
                                 key={i}
                                 solve={s}
+                                pbSingle={bests.single}
+                                pbAo5={bests.ao5}
                                 lastFive={solves.slice(s.index - 5, s.index)}
                                 widths={["w-1/12", "w-6/12", "w-5/12"]}
                                 onClick={() => handleSolveClick(i)}

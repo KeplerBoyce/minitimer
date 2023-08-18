@@ -170,6 +170,7 @@ export default function App() {
         }}>
             <div className="flex w-full h-screen bg-dark-0">
                 <Sidebar
+                    bests={bests}
                     scrollTrigger={scrollTrigger}
                     setScrollTrigger={setScrollTrigger}
                     setCanStart={setCanStart}
