@@ -63,7 +63,6 @@ export default function Solve(props: {
         if (Math.floor(aoSmall(5, lastFive) / 10) * 10 > Math.min(...ao5s)) {
             return false;
         }
-        console.log(ao5s)
         let res = false;
         for (let i = 0; i < ao5s.length; i++) {
             if (ao5s[i] === Math.min(...ao5s)) {
