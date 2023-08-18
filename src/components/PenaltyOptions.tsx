@@ -57,7 +57,7 @@ export default function PenaltyOptions(props: { modifier: SolveModifier, classNa
                         handleDelete();
                         focus();
                     }}
-                    className="px-2 py-1 rounded-md bg-red-600 hover:bg-red-700 font-bold text-light"
+                    className="px-2 py-1 rounded-md bg-slate-200 hover:bg-red-600 font-bold text-base text-black hover:text-light"
                 >
                     <BsTrashFill />
                 </button>

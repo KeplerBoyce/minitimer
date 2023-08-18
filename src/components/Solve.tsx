@@ -63,6 +63,7 @@ export default function Solve(props: {
         if (Math.floor(aoSmall(5, lastFive) / 10) * 10 > Math.min(...ao5s)) {
             return false;
         }
+        console.log(ao5s)
         let res = false;
         for (let i = 0; i < ao5s.length; i++) {
             if (ao5s[i] === Math.min(...ao5s)) {
@@ -133,7 +134,10 @@ export default function Solve(props: {
                 {!isPbAo5() && isOldPbAo5() && <p className="flex justify-center items-center h-min px-1.5 py-0.5 bg-blue-500 text-white text-xs font-sans font-bold rounded-full whitespace-nowrap">
                     Old PB
                 </p>}
-                <p>{msToTime(aoSmall(5, lastFive))}</p>
+                {aoSmall(5, lastFive) > 1e12 && aoSmall(5, lastFive) < 1e13 && <p className="flex justify-center items-center h-min px-1.5 py-0.5 bg-red-500 text-white text-xs font-sans font-bold rounded-full whitespace-nowrap">
+                    DNF
+                </p>}
+                <p>{msToTime(aoSmall(5, lastFive) - (aoSmall(5, lastFive) > 1e12 ? 1e12 : 0))}</p>
             </div>
         </div>
     )

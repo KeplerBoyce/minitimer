@@ -35,7 +35,15 @@ function aoX(n: number, endSize: number, solves: SolveType[]) {
         arr.splice(arr.indexOf(Math.min(...arr)), 1);
         arr.splice(arr.indexOf(Math.max(...arr)), 1);
     };
-    return arr.reduce((a, b) => a + b) / (n - 2 * endSize);
+    let dnf = false;
+    let newArr = arr.map(a => {
+        if (a > 1e12) {
+            dnf = true;
+            return a - 1e12;
+        }
+        return a;
+    });
+    return newArr.reduce((a, b) => a + b) / (n - 2 * endSize) + (dnf ? 1e12 : 0);
 }
 
 export const aoSmall = (n: number, solves: SolveType[]) => aoX(n, 1, solves);
