@@ -140,8 +140,7 @@ export default function Sidebar(props: {
                             <Solve
                                 key={i}
                                 solve={s}
-                                pbSingle={bests.single}
-                                pbAo5={bests.ao5}
+                                solves={solves}
                                 lastFive={solves.slice(s.index - 5, s.index)}
                                 widths={["w-1/12", "w-6/12", "w-5/12"]}
                                 onClick={() => handleSolveClick(i)}
