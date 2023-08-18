@@ -127,10 +127,10 @@ export default function Sidebar(props: {
                 </button>
             </div>
 
-            <div className="flex px-2 pr-6 text-lg text-light font-bold text-left border-b border-light">
-                <p className="w-1/5 italic">#</p>
-                <p className="w-2/5 text-right">Time</p>
-                <p className="w-2/5 text-right">Ao5</p>
+            <div className="flex px-2 pr-6 text-lg text-light font-bold text-right border-b border-light">
+                <p className="w-1/12 italic">#</p>
+                <p className="w-6/12">Time</p>
+                <p className="w-5/12">Ao5</p>
             </div>
             <div ref={solvesDivRef} className="flex flex-col w-full overflow-y-auto">
                 {solves.length > 0 ? <>
@@ -140,7 +140,7 @@ export default function Sidebar(props: {
                                 key={i}
                                 solve={s}
                                 lastFive={solves.slice(s.index - 5, s.index)}
-                                widths={["w-1/5", "w-2/5", "w-2/5"]}
+                                widths={["w-1/12", "w-6/12", "w-5/12"]}
                                 onClick={() => handleSolveClick(i)}
                                 className="px-2 pr-6 hover:bg-dark-2 hover:cursor-pointer text-light text-lg font-mono"
                             />
