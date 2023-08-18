@@ -39,8 +39,8 @@ export default function Sidebar(props: {
     //remove solve at index
     const removeSolve = (index: number) => {
         setSolves([
-            ...solves.slice(0, index - 1),
-            ...solves.slice(index).map(x => {//update index of all later solves
+            ...solves.slice(0, solves.length - index),
+            ...solves.slice(solves.length - index + 1).map(x => {//update index of all later solves
                 x.index--;
                 return x;
             })

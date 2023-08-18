@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
-import { CubesContext } from "../App";
+import { CubesContext, PenaltiesContext } from "../App";
 import { timeToMs } from "../util/helpers";
+import PenaltyOptions from "./PenaltyOptions";
 
 
 export default function Typing(props: { scramble: string, callback: () => void, className?: string }) {
@@ -52,7 +53,7 @@ export default function Typing(props: { scramble: string, callback: () => void, 
                     millis: timeToMs(time),
                     index: solves.length + 1,
                     timestamp: Date.now(),
-                    flags: 0,
+                    modifier: "",
                     scramble: scramble,
                 }]);
             }
@@ -61,9 +62,8 @@ export default function Typing(props: { scramble: string, callback: () => void, 
         }
     }
 
-
     return (
-        <div className={"outline-none container px-6 h-full flex flex-col gap-4 justify-center items-center " + className}>
+        <div className={"outline-none container px-6 h-full flex flex-col gap-6 justify-center items-center " + className}>
             <input
                 type="text"
                 name="time"
@@ -73,8 +73,12 @@ export default function Typing(props: { scramble: string, callback: () => void, 
                 onKeyUp={e => e.currentTarget.setSelectionRange(e.currentTarget.value.length, e.currentTarget.value.length)}
                 onKeyDown={e => handleKeyDown(e as any)}
                 onChange={e => handleChange(e.target.value)}
-                className={"bg-dark-3 font-light font-mono pb-[10%] rounded-xl w-full max-w-sm h-min px-2 pb-0.5 text-center "
+                className={"bg-dark-3 font-light font-mono rounded-xl w-full max-w-sm h-min px-2 pb-0.5 text-center "
                     + (time === "0.00" ? "text-gray-500" : "text-white")}
+            />
+            <PenaltyOptions
+                modifier={solves.length > 0 ? solves[solves.length - 1].modifier : ""}
+                className="mb-[10%]"
             />
         </div>
     )

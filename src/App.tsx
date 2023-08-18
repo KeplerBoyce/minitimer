@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import Sidebar from "./components/Sidebar";
 import Timer from "./components/Timer";
-import { CubesContextType, SessionType, SolveType, DEFAULT_CHOSEN_CUBE, DEFAULT_CUBES, DEFAULT_SESSION_INDEX, DEFAULT_STATS, DEFAULT_TIMER_TYPE, TimerType } from "./util/types";
+import { CubesContextType, SessionType, SolveType, DEFAULT_CHOSEN_CUBE, DEFAULT_CUBES, DEFAULT_SESSION_INDEX, DEFAULT_STATS, DEFAULT_TIMER_TYPE, TimerType, PenaltiesContextType, SolveModifier } from "./util/types";
 import Scramble from "./components/Scramble";
 import { Scrambow } from "scrambow";
 import StatsBlock from "./components/StatsBlock";
@@ -11,6 +11,7 @@ import Typing from "./components/Typing";
 
 
 export const CubesContext = createContext({} as CubesContextType);
+export const PenaltiesContext = createContext({} as PenaltiesContextType);
 
 export default function App() {
     const [cubes, setCubes] = useState(DEFAULT_CUBES);
@@ -45,7 +46,7 @@ export default function App() {
         const ls = localStorage.getItem("cubes");
         const ls2 = localStorage.getItem("chosenCube");
         const ls3 = localStorage.getItem("sessionIndex");
-        const ls4 = localStorage.getItem("tiemrType");
+        const ls4 = localStorage.getItem("timerType");
 
         if (ls !== null) setCubes(JSON.parse(ls));
         if (ls2 !== null) setChosenCube(ls2);
@@ -74,6 +75,31 @@ export default function App() {
     const handleSolveEnd = () => {
         resetScramble();
         setScrollTrigger(true);
+    }
+
+    const changeTimerType = (x: TimerType) => {
+        localStorage.setItem("timerType", x);
+        setTimerType(x);
+    };
+
+    const setLastModifier = (mod: string) => {
+        const newSolves = cubes[chosenCube][sessionIndex].solves;
+        if (newSolves[newSolves.length - 1].modifier === mod) {
+            return;
+        }
+        if (mod === "+2") {
+            newSolves[newSolves.length - 1].millis += 2000;
+        } else if (newSolves[newSolves.length - 1].modifier === "+2") {
+            newSolves[newSolves.length - 1].millis -= 2000;
+        }
+        newSolves[newSolves.length - 1].modifier = mod as SolveModifier;
+        setSolves(newSolves);
+    }
+
+    const deleteLast = () => {
+        const newSolves = cubes[chosenCube][sessionIndex].solves;
+        newSolves.splice(newSolves.length - 1);
+        setSolves(newSolves);
     }
 
     useEffect(() => {
@@ -136,6 +162,12 @@ export default function App() {
             setSessions,
             setSolves,
         }}>
+        <PenaltiesContext.Provider value={{
+            handleNoPenalty: () => setLastModifier(""),
+            handlePlusTwo: () => setLastModifier("+2"),
+            handleDNF: () => setLastModifier("DNF"),
+            handleDelete: deleteLast,
+        }}>
             <div className="flex w-full h-screen bg-dark-0">
                 <Sidebar
                     scrollTrigger={scrollTrigger}
@@ -166,7 +198,7 @@ export default function App() {
                         }
                         <OptionsBlock
                             timerType={timerType}
-                            setTimerType={setTimerType}
+                            changeTimerType={changeTimerType}
                             className="absolute top-4 right-4"
                         />
                         <StatsBlock
@@ -177,6 +209,7 @@ export default function App() {
                     </div>
                 </div>
             </div>
+        </PenaltiesContext.Provider>
         </CubesContext.Provider>
     )
 }

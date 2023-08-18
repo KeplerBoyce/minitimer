@@ -2,7 +2,7 @@ export type SolveType = {
     millis: number,
     index: number,
     timestamp: number,
-    flags: number,
+    modifier: SolveModifier,
     scramble: string,
 };
 
@@ -12,6 +12,8 @@ export type SessionType = {
     solves: SolveType[],
     cube: string,
 };
+
+export type SolveModifier = "" | "+2" | "DNF";
 
 export type CubesType = {[cube: string]: SessionType[]};
 export type CubesContextType = {
@@ -25,6 +27,12 @@ export type CubesContextType = {
     setSessionIndex: (x: number) => void,
     setSessions: (x: SessionType[]) => void,
     setSolves: (x: SolveType[]) => void,
+};
+export type PenaltiesContextType = {
+    handleNoPenalty: () => void,
+    handlePlusTwo: () => void,
+    handleDNF: () => void,
+    handleDelete: () => void,
 };
 
 export type StatsType = {[stat: string]: number};

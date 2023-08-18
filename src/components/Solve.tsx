@@ -14,7 +14,7 @@ export default function Solve(props: {
     return (
         <div onClick={onClick} className={"flex text-lg text-light text-left " + className}>
             <p className={widths[0]}>{solve.index}</p>
-            <p className={widths[1] + " text-right"}>{msToTime(solve.millis)}</p>
+            <p className={widths[1] + " text-right"}>{solve.modifier && `(${solve.modifier})`} {msToTime(solve.millis)}</p>
             <p className={widths[2] + " text-right"}>{msToTime(aoSmall(5, lastFive))}</p>
         </div>
     )

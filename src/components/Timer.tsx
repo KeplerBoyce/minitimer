@@ -1,7 +1,8 @@
 import { useEffect, useState, KeyboardEvent, useContext } from "react";
 import { msToTime } from "../util/helpers";
-import { CubesContext } from "../App";
+import { CubesContext, PenaltiesContext } from "../App";
 import useEventListener from "@use-it/event-listener";
+import PenaltyOptions from "./PenaltyOptions";
 
 
 export default function Timer(props: {scramble: string, callback: () => void, canStart: boolean, className?: string}) {
@@ -36,7 +37,7 @@ export default function Timer(props: {scramble: string, callback: () => void, ca
                 millis: millis,
                 index: solves.length + 1,
                 timestamp: timer.start,
-                flags: 0,
+                modifier: "",
                 scramble: scramble,
             }]);
             callback();
@@ -63,10 +64,14 @@ export default function Timer(props: {scramble: string, callback: () => void, ca
     }, [timer, millis]);
 
     return (
-        <div className={"outline-none container px-6 h-full flex flex-col gap-4 justify-center items-center " + className}>
-            <p className={"font-light font-mono pb-[10%] duration-150" + (held ? " text-green-500" : " text-white")}>
+        <div className={"outline-none container px-6 h-full flex flex-col gap-6 justify-center items-center " + className}>
+            <p className={"font-light font-mono duration-150" + (held ? " text-green-500" : " text-white")}>
                 {msToTime(millis)}
             </p>
+            <PenaltyOptions
+                modifier={solves.length > 0 ? solves[solves.length - 1].modifier : ""}
+                className="mb-[10%]"
+            />
         </div>
     )
 }
