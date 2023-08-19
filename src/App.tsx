@@ -8,6 +8,7 @@ import StatsBlock from "./components/StatsBlock";
 import { aoLarge, aoSmall } from "./util/helpers";
 import OptionsBlock from "./components/OptionsBlock";
 import Typing from "./components/Typing";
+import SelectedBar from "./components/SelectedBar";
 
 
 export const CubesContext = createContext({} as CubesContextType);
@@ -24,6 +25,7 @@ export default function App() {
 
     const [scrollTrigger, setScrollTrigger] = useState(false);
     const [canStart, setCanStart] = useState(true);
+    const [selected, setSelected] = useState([] as number[]);
 
     const [timerType, setTimerType] = useState(DEFAULT_TIMER_TYPE);
 
@@ -175,10 +177,11 @@ export default function App() {
         }}>
             <div className="flex w-full h-screen bg-dark-0">
                 <Sidebar
-                    bests={bests}
                     scrollTrigger={scrollTrigger}
                     setScrollTrigger={setScrollTrigger}
                     setCanStart={setCanStart}
+                    selected={selected}
+                    setSelected={setSelected}
                     className="w-1/5 min-w-[21rem] grow bg-dark-1"
                 />
                 <div className="flex flex-col w-4/5">
@@ -213,6 +216,10 @@ export default function App() {
                             className="absolute bottom-4 right-4 bg-dark-2 rounded-xl"
                         />
                     </div>
+                    <SelectedBar
+                        selected={selected}
+                        className="bg-dark-3"
+                    />
                 </div>
             </div>
         </PenaltiesContext.Provider>

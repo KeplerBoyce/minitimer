@@ -10,13 +10,14 @@ import { CubesContext } from "../App";
 
 
 export default function Sidebar(props: {
-    bests: StatsType,
     scrollTrigger: boolean,
     setScrollTrigger: (x: boolean) => void,
     setCanStart: (x: boolean) => void,
+    selected: number[],
+    setSelected: (x: number[]) => void,
     className?: string,
 }) {
-    const { bests, scrollTrigger, setScrollTrigger, setCanStart, className } = props;
+    const { scrollTrigger, setScrollTrigger, setCanStart, selected, setSelected, className } = props;
     const {
         cubes,
         chosenCube,
@@ -30,7 +31,6 @@ export default function Sidebar(props: {
     } = useContext(CubesContext);
 
     const [solve, setSolve] = useState({} as SolveType);
-    const [selected, setSelected] = useState([] as number[]);
     const [lastClicked, setLastClicked] = useState<number>();
     const [lastSelect, setLastSelect] = useState(false);
     const [shiftHeld, setShiftHeld] = useState(false);
@@ -179,22 +179,21 @@ export default function Sidebar(props: {
             <div ref={solvesDivRef} className="flex flex-col w-full overflow-y-auto">
                 {solves.length > 0 ? <>
                     {solves.slice().reverse().map((s, i) =>
-                        <div className={"flex w-full group "
-                            + (selected.includes(i) ? "bg-blue-500/50 hover:bg-blue-500/60" : "hover:bg-white/10")
+                        <div key={i} className={"flex w-full group "
+                            + (selected.includes(s.index - 1) ? "bg-blue-500/50 hover:bg-blue-500/60" : "hover:bg-white/10")
                             + (i === solves.length - 1 ? " mb-3" : "")}
                         >
                             <Solve
-                                key={i}
                                 solve={s}
                                 solves={solves}
-                                lastFive={solves.slice(i - 4, i + 1)}
+                                lastFive={solves.slice(s.index - 5, s.index)}
                                 widths={["w-2/12", "w-5/12", "w-5/12"]}
-                                onClick={() => handleSolveClick(i)}
+                                onClick={() => handleSolveClick(s.index - 1)}
                                 className={"grow w-full px-2 hover:cursor-pointer text-lg font-mono "
-                                    + (selected.includes(i) ? "text-white" : "text-light")}
+                                    + (selected.includes(s.index - 1) ? "text-white" : "text-light")}
                             />
                             <button
-                                onClick={() => openSolveModal(i)}
+                                onClick={() => openSolveModal(s.index - 1)}
                                 className="w-8 text-white"
                             >
                                 <BsThreeDotsVertical className="hidden group-hover:block" />

@@ -3,6 +3,7 @@ import { SolveType } from "./types";
 
 export function msToTime(ms: number): string {
     if (ms === Number.MAX_VALUE) return "--";
+    if (ms > 1e12) return "DNF";
     const milliseconds = Math.floor((ms % 1000) / 10),
         seconds = Math.floor((ms / 1000) % 60),
         minutes = Math.floor((ms / (1000 * 60)) % 60);

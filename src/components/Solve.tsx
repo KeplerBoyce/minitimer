@@ -106,7 +106,7 @@ export default function Solve(props: {
     }
     
     return (
-        <div onClick={onClick} className={"flex text-lg text-right " + className}>
+        <div onClick={onClick} className={"flex text-lg text-right select-none " + className}>
             <p className={widths[0]}>{solve.index}</p>
             <div className={widths[1] + " flex gap-1 justify-end items-center"}>
                 {isPbSingle() && <p className="flex justify-center items-center h-min px-1.5 py-0.5 bg-green-600 text-white text-xs font-sans font-bold rounded-full whitespace-nowrap">
