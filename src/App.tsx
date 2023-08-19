@@ -109,6 +109,20 @@ export default function App() {
         setSolves(newSolves);
     }
 
+    const deselectAll = () => {
+        setSelected([]);
+    }
+
+    const deleteAllSelected = () => {
+        let newSolves = cubes[chosenCube][sessionIndex].solves;
+        newSolves = newSolves.filter(x => !selected.includes(x.index - 1)).map((x, i) => {
+            x.index = i + 1;
+            return x;
+        });
+        deselectAll();
+        setSolves(newSolves);
+    }
+
     useEffect(() => {
         if (cubes === DEFAULT_CUBES) return;
         localStorage.setItem("cubes", JSON.stringify(cubes))
@@ -218,6 +232,8 @@ export default function App() {
                     </div>
                     <SelectedBar
                         selected={selected}
+                        deselectAll={deselectAll}
+                        deleteAll={deleteAllSelected}
                         className="bg-dark-3"
                     />
                 </div>
