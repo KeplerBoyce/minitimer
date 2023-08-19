@@ -179,7 +179,7 @@ export default function App() {
                     scrollTrigger={scrollTrigger}
                     setScrollTrigger={setScrollTrigger}
                     setCanStart={setCanStart}
-                    className="w-1/5 min-w-[20rem] grow bg-dark-1"
+                    className="w-1/5 min-w-[21rem] grow bg-dark-1"
                 />
                 <div className="flex flex-col w-4/5">
                     <Scramble
