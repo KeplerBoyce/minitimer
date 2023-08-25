@@ -1,5 +1,6 @@
 import { BsTrashFill } from "react-icons/bs";
 
+
 export default function SelectedBar(props: {selected: number[], deselectAll: () => void, deleteAll: () => void, className?: String}) {
     const { selected, deselectAll, deleteAll, className } = props;
 

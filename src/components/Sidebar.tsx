@@ -145,7 +145,7 @@ export default function Sidebar(props: {
                 <p className="text-white">timer</p>
             </div>
 
-            <div className="flex justify-between items-center gap-2 mb-4 max-w-full">
+            <div className="z-10 flex justify-between items-center gap-2 mb-4 max-w-full">
                 <Dropdown
                     options={Object.keys(cubes)}
                     chosenIndex={Object.keys(cubes).indexOf(chosenCube)}
@@ -153,7 +153,7 @@ export default function Sidebar(props: {
                     align="left-0"
                     className="bg-blue-500 hover:bg-blue-600 px-3 py-1 rounded-lg text-white font-semibold"
                 />
-                <div className="min-w-0">
+                <div className="min-w-0 max-w-[12rem]">
                     <Dropdown
                         options={sessions.map(s => s.name)}
                         chosenIndex={sessionIndex}
@@ -171,38 +171,32 @@ export default function Sidebar(props: {
                 </button>
             </div>
 
-            <div className="flex px-2 pr-10 text-lg text-white font-bold text-right border-b border-white">
-                <p className="w-2/12 italic">#</p>
-                <p className="w-5/12">Time</p>
-                <p className="w-5/12">Ao5</p>
-            </div>
-            <div ref={solvesDivRef} className="flex flex-col w-full overflow-y-auto">
-                {solves.length > 0 ? <>
-                    {solves.slice().reverse().map((s, i) =>
-                        <div key={i} className={"flex w-full group "
-                            + (selected.includes(s.index - 1) ? "bg-blue-500/50 hover:bg-blue-500/60" : "hover:bg-white/10")
-                            + (i === solves.length - 1 ? " mb-3" : "")}
-                        >
+            <div className="overflow-y-auto">
+                <div ref={solvesDivRef} className="table w-full mb-3">
+                    {solves.length > 0 && <div className="table-header-group sticky top-0 bg-dark-3 flex px-2 pr-10 text-lg text-white font-bold text-right">
+                        <p className="table-cell italic">#</p>
+                        <p className="table-cell">Time</p>
+                        <p className="table-cell">Ao5</p>
+                        <p></p>
+                    </div>}
+                    {solves.length > 0 ? <div className="table-row-group overflow-y-auto">
+                        {solves.slice().reverse().map((s, i) =>
                             <Solve
+                                key={i}
                                 solve={s}
                                 solves={solves}
                                 lastFive={solves.slice(s.index - 5, s.index)}
-                                widths={["w-2/12", "w-5/12", "w-5/12"]}
                                 onClick={() => handleSolveClick(s.index - 1)}
+                                openSolveModal={() => openSolveModal(s.index - 1)}
+                                selected={selected.includes(s.index - 1)}
                                 className={"grow w-full px-2 hover:cursor-pointer text-lg font-mono "
                                     + (selected.includes(s.index - 1) ? "text-white" : "text-light")}
                             />
-                            <button
-                                onClick={() => openSolveModal(s.index - 1)}
-                                className="w-8 text-white"
-                            >
-                                <BsThreeDotsVertical className="hidden group-hover:block" />
-                            </button>
-                        </div>
-                    )}
-                </> : <p className="px-2 text-lg text-light italic">
-                    Session empty
-                </p>}
+                        )}
+                    </div> : <p className="px-2 text-lg text-light italic">
+                        Session empty
+                    </p>}
+                </div>
             </div>
 
             <SessionModal

@@ -126,6 +126,9 @@ export default function App() {
     useEffect(() => {
         if (cubes === DEFAULT_CUBES) return;
         localStorage.setItem("cubes", JSON.stringify(cubes))
+    }, [cubes]);
+
+    useEffect(() => {
         const tempSolves = cubes[chosenCube][sessionIndex].solves;
         setCurrents({
             single: tempSolves[tempSolves.length - 1]?.millis ?? Number.MAX_VALUE,
@@ -156,7 +159,7 @@ export default function App() {
             if (thisAo1000 < ao1000) ao1000 = thisAo1000;
         });
         setBests({single, ao5, ao12, ao50, ao100, ao1000});
-    }, [cubes]);
+    }, [chosenCube, sessionIndex]);
 
     useEffect(() => {
         if (cubes === DEFAULT_CUBES) return;
@@ -169,6 +172,10 @@ export default function App() {
         localStorage.setItem("sessionIndex", sessionIndex.toString())
         resetScramble();
     }, [sessionIndex]);
+
+    useEffect(() => {
+        deselectAll();
+    }, [chosenCube, sessionIndex]);
 
     return (
         <CubesContext.Provider value={{
@@ -196,7 +203,7 @@ export default function App() {
                     setCanStart={setCanStart}
                     selected={selected}
                     setSelected={setSelected}
-                    className="w-1/5 min-w-[21rem] grow bg-dark-1"
+                    className="w-min grow bg-dark-1"
                 />
                 <div className="flex flex-col w-4/5">
                     <Scramble
