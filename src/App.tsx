@@ -205,7 +205,7 @@ export default function App() {
                     setSelected={setSelected}
                     className="w-min grow bg-dark-1"
                 />
-                <div className="flex flex-col w-4/5">
+                <div className="flex flex-col w-full">
                     <Scramble
                         scramble={scramble}
                         resetScramble={resetScramble}
