@@ -114,11 +114,11 @@ export default function Solve(props: {
     }
     
     return (
-        <div onClick={onClick} className={"table-row h-min flex text-lg text-right select-none w-full " + className
+        <div className={"group table-row flex text-lg text-right select-none w-full " + className
             + (selected ? " bg-blue-500/50 hover:bg-blue-500/60" : " hover:bg-white/10")}
         >
-            <p className="table-cell">{solve.index}</p>
-            <div className="table-cell">
+            <p onClick={onClick} className="table-cell">{solve.index}</p>
+            <div onClick={onClick} className="table-cell">
                 <div className="ml-3 flex gap-1 justify-end items-center">
                     {isPbSingle() && <p className="flex justify-center items-center h-min px-1 bg-green-600 text-white text-xs font-sans font-bold rounded-full whitespace-nowrap">
                         PB
@@ -135,7 +135,7 @@ export default function Solve(props: {
                     <p className="text-right">{msToTime(solve.millis - (solve.modifier === "DNF" ? 1e12 : 0))}</p>
                 </div>
             </div>
-            <div className="table-cell">
+            <div onClick={onClick} className="table-cell">
                 <div className="ml-3 flex gap-1 justify-end items-center">
                     {isPbAo5() && <p className="flex justify-center items-center h-min px-1 bg-green-600 text-white text-xs font-sans font-bold rounded-full whitespace-nowrap">
                         PB
@@ -154,9 +154,11 @@ export default function Solve(props: {
             </div>
             <button
                 onClick={() => openSolveModal()}
-                className="table-cell w-8 text-white"
+                className="table-cell w-10 text-white"
             >
-                <BsThreeDotsVertical className="hidden group-hover:block" />
+                <div className="flex justify-center items-center pr-2">
+                    <BsThreeDotsVertical className="hidden group-hover:block" />
+                </div>
             </button>
         </div>
     )

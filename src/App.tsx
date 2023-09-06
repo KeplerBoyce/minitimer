@@ -123,12 +123,7 @@ export default function App() {
         setSolves(newSolves);
     }
 
-    useEffect(() => {
-        if (cubes === DEFAULT_CUBES) return;
-        localStorage.setItem("cubes", JSON.stringify(cubes))
-    }, [cubes]);
-
-    useEffect(() => {
+    const updateStatsBlock = () => {
         const tempSolves = cubes[chosenCube][sessionIndex].solves;
         setCurrents({
             single: tempSolves[tempSolves.length - 1]?.millis ?? Number.MAX_VALUE,
@@ -159,7 +154,16 @@ export default function App() {
             if (thisAo1000 < ao1000) ao1000 = thisAo1000;
         });
         setBests({single, ao5, ao12, ao50, ao100, ao1000});
-    }, [chosenCube, sessionIndex]);
+    }
+
+    useEffect(() => {
+        if (cubes === DEFAULT_CUBES) return;
+        localStorage.setItem("cubes", JSON.stringify(cubes))
+    }, [cubes]);
+
+    useEffect(() => {
+        updateStatsBlock();
+    }, [cubes, chosenCube, sessionIndex]);
 
     useEffect(() => {
         if (cubes === DEFAULT_CUBES) return;
