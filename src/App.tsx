@@ -207,6 +207,8 @@ export default function App() {
                     setCanStart={setCanStart}
                     selected={selected}
                     setSelected={setSelected}
+                    currents={currents}
+                    bests={bests}
                     className="w-min grow bg-dark-1"
                 />
                 <div className="flex flex-col w-full">
@@ -235,11 +237,9 @@ export default function App() {
                             changeTimerType={changeTimerType}
                             className="absolute top-4 right-4"
                         />
-                        <StatsBlock
-                            currents={currents}
-                            bests={bests}
-                            className="absolute bottom-4 right-4 bg-dark-2 rounded-xl"
-                        />
+                        <div className="p-4 text-light w-min whitespace-nowrap absolute bottom-4 right-4 bg-dark-2 rounded-xl">
+                            <StatsBlock currents={currents} bests={bests} />
+                        </div>
                     </div>
                     <SelectedBar
                         selected={selected}

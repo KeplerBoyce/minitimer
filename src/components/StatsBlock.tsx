@@ -2,11 +2,11 @@ import { msToTime } from "../util/helpers";
 import { StatsType } from "../util/types";
 
 
-export default function StatsBlock(props: {currents: StatsType, bests: StatsType, className?: string}) {
-    const { currents, bests, className } = props;
+export default function StatsBlock(props: {currents: StatsType, bests: StatsType}) {
+    const { currents, bests } = props;
 
     return (
-        <div className={"flex gap-4 p-4 text-light w-min whitespace-nowrap " + className}>
+        <div className="flex gap-4 text-base">
             <div className="flex flex-col gap-1 font-bold">
                 <p className="text-white">Stats</p>
                 {Object.keys(currents).map((k, i) =>

@@ -15,9 +15,20 @@ export default function Sidebar(props: {
     setCanStart: (x: boolean) => void,
     selected: number[],
     setSelected: (x: number[]) => void,
+    currents: StatsType,
+    bests: StatsType,
     className?: string,
 }) {
-    const { scrollTrigger, setScrollTrigger, setCanStart, selected, setSelected, className } = props;
+    const {
+        scrollTrigger,
+        setScrollTrigger,
+        setCanStart,
+        selected,
+        setSelected,
+        className,
+        currents,
+        bests,
+    } = props;
     const {
         cubes,
         chosenCube,
@@ -204,6 +215,8 @@ export default function Sidebar(props: {
                 removeSession={removeSession}
                 isOpen={sessionModalOpen}
                 setIsOpen={setSessionModalOpen}
+                currents={currents}
+                bests={bests}
             />
             <SolveModal
                 solve={solve}

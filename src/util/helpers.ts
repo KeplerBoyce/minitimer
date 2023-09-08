@@ -1,6 +1,11 @@
 import { SolveType } from "./types";
 
 
+export function toDateString(ts: number): string {
+    const date = new Date(ts);
+    return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+}
+
 export function msToTime(ms: number): string {
     if (ms === Number.MAX_VALUE) return "--";
     if (ms > 1e12) return "DNF";
